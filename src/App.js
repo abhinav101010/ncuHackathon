@@ -1,9 +1,13 @@
 import { ThemeProvider, CssBaseline, Box } from "@mui/material";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import theme from "./theme";
+
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Sponsors from "./components/Sponsors";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 import NetworkBackground from "./components/NetworkBackground";
+
 import EventPage from "./pages/EventPage";
 import RulePage from "./pages/RulePage";
 import RegisterPage from "./pages/RegisterPage";
@@ -12,23 +16,16 @@ import ThemePage from "./pages/ThemePage";
 import LoginPage from "./pages/LoginPage";
 import AdminPage from "./pages/AdminPage";
 import Dashboard from "./pages/Dashboard";
-import Sponsors from "./components/Sponsors";
 import FAQ from "./pages/FAQ";
+import AboutPage from "./pages/AboutPage";
+import ContactUsPage from "./pages/ContactUsPage";
+import TeamLoginPage from "./pages/TeamLoginPage";
+import ProtectedTeamRoute from "./components/ProtectedTeamRoute";
 
 function App() {
-  console.log({
-  Navbar,
-  Footer,
-  NetworkBackground,
-  HomePage,
-  ThemePage,
-  EventPage,
-  RulePage,
-  RegisterPage,
-  LoginPage,
-  AdminPage,
-  Dashboard,
-});
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -36,24 +33,48 @@ function App() {
       {/* Background */}
       <NetworkBackground />
 
-      {/* Foreground Content */}
       <Box sx={{ position: "relative", zIndex: 1 }}>
         <Navbar />
 
         <Routes>
+          {/* PUBLIC ROUTES */}
           <Route path="/" element={<HomePage />} />
           <Route path="/themes" element={<ThemePage />} />
           <Route path="/events" element={<EventPage />} />
           <Route path="/rules" element={<RulePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactUsPage />} />
 
-          <Route path="/login/" element={<LoginPage />} />
-          <Route path="/admin/" element={<AdminPage />} />
-          <Route path="/dashboard/" element={<Dashboard />} />
+          {/* ADMIN LOGIN */}
+          <Route path="/admin/login" element={<LoginPage />} />
+
+          {/* PROTECTED ADMIN */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedAdminRoute>
+                <AdminPage />
+              </ProtectedAdminRoute>
+            }
+          />
+
+          {/* TEAM DASHBOARD (you can protect later) */}
+          <Route path="/login" element={<TeamLoginPage />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedTeamRoute>
+                <Dashboard />
+              </ProtectedTeamRoute>
+            }
+          />
         </Routes>
-        <Sponsors />
-        <Footer />
+
+        {/* Hide Sponsors + Footer for admin pages */}
+        {!isAdminRoute && <Sponsors />}
+        {!isAdminRoute && <Footer />}
       </Box>
     </ThemeProvider>
   );

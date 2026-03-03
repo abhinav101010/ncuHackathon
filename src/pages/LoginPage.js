@@ -114,7 +114,7 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch("http://localhost:5000/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -123,15 +123,15 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message);
+        alert(data.error);
         return;
       }
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("role", data.role);
+      // Store admin token
+      localStorage.setItem("adminToken", data.token);
 
-      window.location.href =
-        data.role === "admin" ? "/admin" : "/dashboard";
+      // Redirect to admin dashboard
+      window.location.href = "/admin";
     } catch (err) {
       alert("Server error");
     }
@@ -188,8 +188,7 @@ export default function LoginPage() {
             mb={4}
             sx={{
               fontWeight: 700,
-              background:
-                "linear-gradient(90deg,#00ffa3,#00c6ff,#ff0080)",
+              background: "linear-gradient(90deg,#00ffa3,#00c6ff,#ff0080)",
               WebkitBackgroundClip: "text",
               color: "transparent",
             }}
@@ -202,9 +201,7 @@ export default function LoginPage() {
             label="Email"
             margin="normal"
             value={form.email}
-            onChange={(e) =>
-              setForm({ ...form, email: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
 
           <TextField
@@ -213,9 +210,7 @@ export default function LoginPage() {
             type="password"
             margin="normal"
             value={form.password}
-            onChange={(e) =>
-              setForm({ ...form, password: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
 
           <Button

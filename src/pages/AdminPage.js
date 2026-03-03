@@ -27,7 +27,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 
 const API = "http://localhost:5000/api";
 
-export default function Matrix() {
+export default function AdminPage() {
   const [tab, setTab] = useState(0);
   const [data, setData] = useState([]);
   const [registrations, setRegistrations] = useState([]);
@@ -117,7 +117,7 @@ export default function Matrix() {
   return (
     <Container sx={{ mt: 10 }}>
       <Typography variant="h4" gutterBottom>
-        Admin Matrix
+        Admin Panel
       </Typography>
 
       <Tabs value={tab} onChange={(e, v) => setTab(v)}>

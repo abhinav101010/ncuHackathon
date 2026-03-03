@@ -1,6 +1,82 @@
 const express = require("express");
 const router = express.Router();
 const Registration = require("../models/Registration");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+//
+// 🔹 LOGIN TEAM (MUST COME FIRST)
+//
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const team = await Registration.findOne({ email });
+
+    if (!team)
+      return res.status(404).json({ error: "Team not found" });
+
+    const isMatch = await bcrypt.compare(password, team.password);
+
+    if (!isMatch)
+      return res.status(401).json({ error: "Invalid password" });
+
+    const token = jwt.sign(
+      { id: team._id, teamId: team.teamId, role: "team" },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.json({
+      message: "Login successful",
+      token,
+      teamName: team.teamName,
+      teamId: team.teamId,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+//
+// 🔹 GET CURRENT TEAM (MUST COME BEFORE /:id)
+//
+router.get("/me", async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+
+    if (!token)
+      return res.status(401).json({ error: "No token provided" });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const team = await Registration.findById(decoded.id).select("-password");
+
+    if (!team)
+      return res.status(404).json({ error: "Team not found" });
+
+    res.json(team);
+  } catch (err) {
+    res.status(401).json({ error: "Invalid token" });
+  }
+});
+
+router.put("/me", async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const updated = await Registration.findByIdAndUpdate(
+      decoded.id,
+      req.body,
+      { new: true }
+    ).select("-password");
+
+    res.json(updated);
+  } catch (err) {
+    res.status(401).json({ error: "Update failed" });
+  }
+});
 
 //
 // 🔹 GET ALL (Admin)
@@ -27,16 +103,18 @@ router.get("/:id", async (req, res) => {
 });
 
 //
-// 🔹 CREATE (Register Team)
+// 🔹 CREATE
 //
 router.post("/", async (req, res) => {
   try {
     const lastTeam = await Registration.findOne().sort({ teamId: -1 });
-
     const newTeamId = lastTeam ? lastTeam.teamId + 1 : 1;
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     const newRegistration = new Registration({
       ...req.body,
+      password: hashedPassword,
       teamId: newTeamId,
     });
 
@@ -49,7 +127,7 @@ router.post("/", async (req, res) => {
 });
 
 //
-// 🔹 UPDATE TEAM
+// 🔹 UPDATE BY ID
 //
 router.put("/:id", async (req, res) => {
   try {
@@ -66,7 +144,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //
-// 🔹 DELETE TEAM
+// 🔹 DELETE
 //
 router.delete("/:id", async (req, res) => {
   try {
@@ -74,35 +152,6 @@ router.delete("/:id", async (req, res) => {
     res.json({ message: "Team deleted" });
   } catch (err) {
     res.status(400).json({ error: err.message });
-  }
-});
-
-//
-// 🔹 LOGIN TEAM
-//
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const team = await Registration.findOne({ email });
-
-    if (!team) {
-      return res.status(404).json({ error: "Team not found" });
-    }
-
-    if (team.password !== password) {
-      return res.status(401).json({ error: "Invalid password" });
-    }
-
-    res.json({
-      message: "Login successful",
-      teamId: team.teamId,
-      id: team._id,
-      teamName: team.teamName,
-    });
-
-  } catch (err) {
-    res.status(500).json({ error: err.message });
   }
 });
 
