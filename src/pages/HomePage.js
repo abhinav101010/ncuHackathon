@@ -1,3 +1,4 @@
+javascript;
 import { Container, Typography, Box, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -8,16 +9,17 @@ import EventPage from "./EventPage";
 import RulePage from "./RulePage";
 import { useNavigate } from "react-router-dom";
 
+const words = [
+  "THE FUTURE",
+  "INNOVATION",
+  "AI SOLUTIONS",
+  "NEXT BIG IDEA",
+  "TECH FOR IMPACT",
+  "THE IMPOSSIBLE",
+];
+
 export default function HomePage() {
   const navigate = useNavigate();
-  const words = [
-    "THE FUTURE",
-    "INNOVATION",
-    "AI SOLUTIONS",
-    "NEXT BIG IDEA",
-    "TECH FOR IMPACT",
-    "THE IMPOSSIBLE",
-  ];
 
   const [wordIndex, setWordIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
@@ -25,27 +27,28 @@ export default function HomePage() {
 
   useEffect(() => {
     const currentWord = words[wordIndex];
-    let typingSpeed = isDeleting ? 50 : 90;
 
-    const timeout = setTimeout(() => {
-      if (!isDeleting) {
+    let timeout;
+
+    if (!isDeleting && displayedText.length < currentWord.length) {
+      timeout = setTimeout(() => {
         setDisplayedText(currentWord.slice(0, displayedText.length + 1));
-
-        if (displayedText === currentWord) {
-          setTimeout(() => setIsDeleting(true), 1200);
-        }
-      } else {
+      }, 90);
+    } else if (!isDeleting && displayedText.length === currentWord.length) {
+      timeout = setTimeout(() => {
+        setIsDeleting(true);
+      }, 1200);
+    } else if (isDeleting && displayedText.length > 0) {
+      timeout = setTimeout(() => {
         setDisplayedText(currentWord.slice(0, displayedText.length - 1));
-
-        if (displayedText === "") {
-          setIsDeleting(false);
-          setWordIndex((prev) => (prev + 1) % words.length);
-        }
-      }
-    }, typingSpeed);
+      }, 50);
+    } else if (isDeleting && displayedText.length === 0) {
+      setIsDeleting(false);
+      setWordIndex((prev) => (prev + 1) % words.length);
+    }
 
     return () => clearTimeout(timeout);
-  }, [displayedText, isDeleting, wordIndex, words]);
+  }, [displayedText, isDeleting, wordIndex]);
 
   return (
     <>

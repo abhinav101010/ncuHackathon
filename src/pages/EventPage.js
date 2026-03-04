@@ -1,3 +1,4 @@
+javascript;
 import React from "react";
 import { Container, Grid, Typography, Box, Paper } from "@mui/material";
 import SectionHeading from "../components/SectionHeading";

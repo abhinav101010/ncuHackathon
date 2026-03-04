@@ -1,3 +1,4 @@
+javascript;
 import {
   AppBar,
   Toolbar,
@@ -8,15 +9,24 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
 
 export default function Navbar({ themeName, setThemeName }) {
+  const theme = useTheme();
+
+  const isLight = theme.palette.mode === "light";
+
   return (
     <AppBar
       position="fixed"
       sx={{
-        background: "rgba(0,0,0,0.6)",
+        background: isLight ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.6)",
+
+        color: theme.palette.text.primary,
+
         backdropFilter: "blur(10px)",
-        borderBottom: "1px solid rgba(255,255,255,0.1)",
+
+        borderBottom: `1px solid ${theme.palette.primary.main}30`,
       }}
     >
       <Toolbar>
@@ -28,7 +38,7 @@ export default function Navbar({ themeName, setThemeName }) {
           sx={{
             fontWeight: "bold",
             textDecoration: "none",
-            color: "#00ffa3",
+            color: theme.palette.primary.main,
             letterSpacing: 1,
           }}
         >
@@ -44,9 +54,11 @@ export default function Navbar({ themeName, setThemeName }) {
           onChange={(e) => setThemeName(e.target.value)}
           sx={{
             mr: 3,
-            color: "white",
-            border: "1px solid rgba(255,255,255,0.2)",
-            "& .MuiSvgIcon-root": { color: "white" },
+            color: theme.palette.text.primary,
+            border: `1px solid ${theme.palette.primary.main}40`,
+            ".MuiOutlinedInput-notchedOutline": {
+              border: "none",
+            },
           }}
         >
           <MenuItem value="dark">Dark Neon</MenuItem>
@@ -55,19 +67,19 @@ export default function Navbar({ themeName, setThemeName }) {
         </Select>
 
         {/* Navigation Links */}
-        <Button component={Link} to="/" sx={{ mx: 1, color: "white" }}>
+        <Button component={Link} to="/" color="inherit">
           Home
         </Button>
 
-        <Button component={Link} to="/faq" sx={{ mx: 1, color: "white" }}>
+        <Button component={Link} to="/faq" color="inherit">
           FAQ
         </Button>
 
-        <Button component={Link} to="/about" sx={{ mx: 1, color: "white" }}>
+        <Button component={Link} to="/about" color="inherit">
           About
         </Button>
 
-        <Button component={Link} to="/contact" sx={{ mx: 1, color: "white" }}>
+        <Button component={Link} to="/contact" color="inherit">
           Contact
         </Button>
 
@@ -76,11 +88,8 @@ export default function Navbar({ themeName, setThemeName }) {
           component={Link}
           to="/register"
           variant="contained"
-          sx={{
-            ml: 2,
-            background: "#ff0080",
-            fontWeight: "bold",
-          }}
+          color="secondary"
+          sx={{ ml: 2, fontWeight: "bold" }}
         >
           Register
         </Button>

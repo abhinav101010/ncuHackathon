@@ -1,75 +1,121 @@
-import { Container, Typography, TextField, Button, Box } from "@mui/material";
+javascript;
+import React from "react";
+import { Container, Typography, Grid, Box, Button, Paper } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { motion } from "framer-motion";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+
+const contacts = [
+  {
+    name: "Jatin",
+    role: "Common Query",
+    phone: "919315431144",
+  },
+  {
+    name: "Khushi",
+    role: "Helpdesk & FAQ'S",
+    phone: "918595594917",
+  },
+  {
+    name: "Aayush",
+    role: "Sponsorship",
+    phone: "919306101432",
+  },
+  {
+    name: "Ansh Gupta",
+    role: "Social Media",
+    phone: "917292072784",
+  },
+];
 
 export default function ContactUsPage() {
+  const theme = useTheme();
+
+  const message = encodeURIComponent(
+    "Hello! I would like to know more about the Hackathon.",
+  );
+
   return (
-    <Container maxWidth="sm" sx={{ mt: 10, mb: 10 }}>
-      {/* Page Title */}
+    <Container sx={{ py: 12 }}>
+      {/* Heading */}
       <Typography
         variant="h3"
+        textAlign="center"
         sx={{
-          textAlign: "center",
+          mb: 6,
           fontWeight: "bold",
-          mb: 4,
-          color: "#00ffa3",
+          color: theme.palette.primary.main,
         }}
       >
         Contact Us
       </Typography>
 
-      {/* Subtitle */}
-      <Typography
-        variant="body1"
-        sx={{ textAlign: "center", color: "gray", mb: 5 }}
-      >
-        Have questions about the hackathon? Reach out to us and our team will
-        get back to you soon.
-      </Typography>
+      {/* Contact Cards */}
+      <Grid container spacing={4} justifyContent="center">
+        {contacts.map((person, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 4,
+                  textAlign: "center",
+                  borderRadius: 3,
 
-      {/* Contact Form */}
-      <Box
-        component="form"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-        }}
-      >
-        <TextField label="Your Name" variant="outlined" fullWidth />
+                  background: theme.palette.background.paper,
 
-        <TextField label="Email Address" variant="outlined" fullWidth />
+                  border: `1px solid ${theme.palette.primary.main}40`,
 
-        <TextField
-          label="Message"
-          variant="outlined"
-          multiline
-          rows={4}
-          fullWidth
-        />
+                  backdropFilter: "blur(10px)",
 
-        <Button
-          variant="contained"
-          sx={{
-            background: "#ff0080",
-            fontWeight: "bold",
-            padding: "10px",
-          }}
-        >
-          Send Message
-        </Button>
-      </Box>
+                  transition: "0.3s",
 
-      {/* Contact Details */}
-      <Box sx={{ textAlign: "center", mt: 6 }}>
-        <Typography variant="h6" sx={{ mb: 1 }}>
-          Organizer Contact
-        </Typography>
+                  boxShadow: `0 0 15px ${theme.palette.primary.main}20`,
 
-        <Typography color="gray">📧 hackathon@ncu.edu</Typography>
+                  "&:hover": {
+                    transform: "translateY(-6px)",
+                    boxShadow: `0 0 30px ${theme.palette.primary.main}50`,
+                  },
+                }}
+              >
+                <Typography variant="h6" fontWeight="bold">
+                  {person.name}
+                </Typography>
 
-        <Typography color="gray">
-          📍 The NorthCap University, Gurugram
-        </Typography>
-      </Box>
+                <Typography
+                  sx={{
+                    color: theme.palette.secondary.main,
+                    mb: 2,
+                  }}
+                >
+                  {person.role}
+                </Typography>
+
+                <Typography sx={{ mb: 3 }}>+{person.phone}</Typography>
+
+                <Button
+                  variant="contained"
+                  startIcon={<WhatsAppIcon />}
+                  href={`https://wa.me/${person.phone}?text=${message}`}
+                  target="_blank"
+                  sx={{
+                    borderRadius: "30px",
+                    px: 3,
+                    boxShadow: `0 0 15px ${theme.palette.primary.main}`,
+                  }}
+                >
+                  Message on WhatsApp
+                </Button>
+              </Paper>
+            </motion.div>
+          </Grid>
+        ))}
+      </Grid>
     </Container>
   );
 }

@@ -1,3 +1,4 @@
+javascript;
 import { useState } from "react";
 import {
   Box,
@@ -25,6 +26,7 @@ export default function RegistrationForm() {
   const [formData, setFormData] = useState({
     teamName: "",
     teamLead: "",
+    teamLeadEmail: "",
     phone: "",
     university: "",
     yearCourse: "",
@@ -40,9 +42,17 @@ export default function RegistrationForm() {
 
   // STEP 1 VALIDATION
   const handleNextStep1 = () => {
-    const { teamName, teamLead, phone, university, yearCourse } = formData;
+    const { teamName, teamLead, teamLeadEmail, phone, university, yearCourse } =
+      formData;
 
-    if (!teamName || !teamLead || !phone || !university || !yearCourse) {
+    if (
+      !teamName ||
+      !teamLead ||
+      !teamLeadEmail ||
+      !phone ||
+      !university ||
+      !yearCourse
+    ) {
       toast.error("Please fill all required fields");
       return;
     }
@@ -73,11 +83,22 @@ export default function RegistrationForm() {
   };
 
   const handleSubmit = () => {
-    toast.success("Registration submitted 🚀");
+    if (!formData.selectedTheme) {
+      toast.error("Please select a theme");
+      return;
+    }
+
+    if (!formData.ideaDescription) {
+      toast.error("Please describe your idea");
+      return;
+    }
 
     console.log("Form Data:", formData);
 
+    toast.success("Registration submitted 🚀");
     alert("Registration submitted successfully!");
+
+    setStep(1);
   };
 
   return (
@@ -130,8 +151,19 @@ export default function RegistrationForm() {
 
             <TextField
               fullWidth
+              label="Team Lead Email"
+              margin="normal"
+              value={formData.teamLeadEmail}
+              onChange={(e) =>
+                setFormData({ ...formData, teamLeadEmail: e.target.value })
+              }
+            />
+
+            <TextField
+              fullWidth
               label="Phone Number"
               margin="normal"
+              inputProps={{ maxLength: 10 }}
               value={formData.phone}
               onChange={(e) =>
                 setFormData({
@@ -201,7 +233,7 @@ export default function RegistrationForm() {
 
             <TextField
               fullWidth
-              label="Team Login Username"
+              label="Team Login Email"
               margin="normal"
               type="email"
               value={formData.email}
@@ -259,6 +291,7 @@ export default function RegistrationForm() {
                       image={theme.img}
                       sx={{ height: 160 }}
                     />
+
                     <CardContent>
                       <Typography>{theme.title}</Typography>
                     </CardContent>
@@ -287,12 +320,7 @@ export default function RegistrationForm() {
                 Back
               </Button>
 
-              <Button
-                fullWidth
-                variant="contained"
-                color="secondary"
-                onClick={handleSubmit}
-              >
+              <Button fullWidth variant="contained" onClick={handleSubmit}>
                 Submit
               </Button>
             </Box>
@@ -310,6 +338,7 @@ export default function RegistrationForm() {
         {selectedThemeObj && (
           <>
             <DialogTitle>{selectedThemeObj.title}</DialogTitle>
+
             <DialogContent>
               <Box
                 component="img"

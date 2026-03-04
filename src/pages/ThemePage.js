@@ -1,3 +1,4 @@
+javascript;
 import React, { useState } from "react";
 import {
   Container,
@@ -10,6 +11,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import SectionHeading from "../components/SectionHeading";
 import themes from "../data-static/themes";
 import ThemeCard from "../components/ThemeCard";
@@ -20,11 +22,13 @@ export default function ThemePage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState(null);
 
+  const theme = useTheme();
+
   const location = useLocation();
   const isThemes = location.pathname.startsWith("/themes");
 
-  const handleOpen = (theme) => {
-    setSelectedTheme(theme);
+  const handleOpen = (themeItem) => {
+    setSelectedTheme(themeItem);
     setDialogOpen(true);
   };
 
@@ -34,7 +38,7 @@ export default function ThemePage() {
         <SectionHeading>Themes</SectionHeading>
 
         <Grid container spacing={4} justifyContent="center" alignItems="center">
-          {themes.map((theme, i) => (
+          {themes.map((themeItem, i) => (
             <Grid
               item
               xs={12}
@@ -46,7 +50,7 @@ export default function ThemePage() {
                 justifyContent: "center",
               }}
             >
-              <ThemeCard theme={theme} onClick={handleOpen} />
+              <ThemeCard theme={themeItem} onClick={handleOpen} />
             </Grid>
           ))}
         </Grid>
@@ -60,9 +64,10 @@ export default function ThemePage() {
         fullWidth
         PaperProps={{
           sx: {
-            backgroundColor: "#0f0f0f",
-            border: "1px solid rgba(0,255,163,0.4)",
+            backgroundColor: theme.palette.background.paper,
+            border: `1px solid ${theme.palette.primary.main}`,
             borderRadius: 3,
+            boxShadow: `0 0 25px ${theme.palette.primary.main}40`,
           },
         }}
       >
@@ -70,8 +75,9 @@ export default function ThemePage() {
           <>
             <DialogTitle
               sx={{
-                borderBottom: "1px solid rgba(255,255,255,0.1)",
+                borderBottom: `1px solid ${theme.palette.divider}`,
                 fontWeight: "bold",
+                color: theme.palette.primary.main,
               }}
             >
               {selectedTheme.title}
@@ -87,11 +93,25 @@ export default function ThemePage() {
                   mb: 2,
                 }}
               />
-              <Typography>{selectedTheme.desc}</Typography>
+
+              <Typography
+                sx={{
+                  color: theme.palette.text.primary,
+                  lineHeight: 1.7,
+                }}
+              >
+                {selectedTheme.desc}
+              </Typography>
             </DialogContent>
 
             <DialogActions sx={{ p: 2 }}>
-              <Button onClick={() => setDialogOpen(false)}>Close</Button>
+              <Button
+                onClick={() => setDialogOpen(false)}
+                variant="contained"
+                color="primary"
+              >
+                Close
+              </Button>
             </DialogActions>
           </>
         )}

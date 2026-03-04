@@ -1,3 +1,4 @@
+javascript;
 import React, { useEffect, useState } from "react";
 import {
   Container,
@@ -24,8 +25,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import RefreshIcon from "@mui/icons-material/Refresh";
-
-const API = "http://localhost:5000/api";
+import { API } from "../../utils/api";
 
 export default function AdminPage() {
   const [tab, setTab] = useState(0);
@@ -33,6 +33,7 @@ export default function AdminPage() {
   const [registrations, setRegistrations] = useState([]);
   const [form, setForm] = useState({});
   const [editingId, setEditingId] = useState(null);
+  const [image, setImage] = useState(null);
 
   const names = ["themes", "events", "rules", "sponsors"];
   const currentName = names[tab];
@@ -48,13 +49,13 @@ export default function AdminPage() {
   }, [tab]);
 
   const loadData = async () => {
-    const res = await fetch(`${API}/${currentName}`);
+    const res = await fetch(`${API}/api/${currentName}`);
     const json = await res.json();
     setData(json);
   };
 
   const loadRegistrations = async () => {
-    const res = await fetch(`${API}/registrations`);
+    const res = await fetch(`${API}/api/registrations`);
     const json = await res.json();
     setRegistrations(json);
   };
@@ -63,29 +64,49 @@ export default function AdminPage() {
 
   const handleSubmit = async () => {
     const method = editingId ? "PUT" : "POST";
+
     const url = editingId
-      ? `${API}/${currentName}/${editingId}`
-      : `${API}/${currentName}`;
+      ? `${API}/api/${currentName}/${editingId}`
+      : `${API}/api/${currentName}`;
 
-    const payload = currentName === "rules" ? { text: form.text } : form;
+    if (currentName === "rules") {
+      await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: form.text }),
+      });
+    } else {
+      const formData = new FormData();
 
-    await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+      Object.keys(form).forEach((key) => {
+        if (key !== "img" && key !== "_id") {
+          formData.append(key, form[key]);
+        }
+      });
+
+      if (image) {
+        formData.append("img", image);
+      }
+
+      await fetch(url, {
+        method,
+        body: formData,
+      });
+    }
 
     setForm({});
+    setImage(null);
     setEditingId(null);
+
     loadData();
   };
 
   // ================= DELETE =================
 
   const handleDelete = async (id) => {
-    await fetch(`${API}/${currentName}/${id}`, {
+    await fetch(`${API}/api/${currentName}/${id}`, {
       method: "DELETE",
     });
 
@@ -100,14 +121,17 @@ export default function AdminPage() {
     if (currentName === "rules") {
       setForm({ text: item.text });
     } else {
-      setForm(item);
+      const { img, _id, ...rest } = item;
+      setForm(rest);
     }
+
+    setImage(null);
   };
 
   // ================= DELETE REGISTRATION =================
 
   const deleteRegistration = async (id) => {
-    await fetch(`${API}/registrations/${id}`, {
+    await fetch(`${API}/api/registrations/${id}`, {
       method: "DELETE",
     });
 
@@ -136,7 +160,6 @@ export default function AdminPage() {
         <>
           <Box mt={3}>
             <Grid container spacing={2}>
-              {/* THEMES & EVENTS */}
               {(currentName === "themes" || currentName === "events") && (
                 <>
                   <Grid item xs={4}>
@@ -161,7 +184,6 @@ export default function AdminPage() {
                     />
                   </Grid>
 
-                  {/* EVENT DATE */}
                   {currentName === "events" && (
                     <Grid item xs={4}>
                       <TextField
@@ -177,7 +199,6 @@ export default function AdminPage() {
                 </>
               )}
 
-              {/* SPONSORS */}
               {currentName === "sponsors" && (
                 <Grid item xs={4}>
                   <TextField
@@ -192,16 +213,24 @@ export default function AdminPage() {
               {/* IMAGE FIELD */}
               {currentName !== "rules" && (
                 <Grid item xs={4}>
-                  <TextField
-                    label="Image URL"
-                    fullWidth
-                    value={form.img || ""}
-                    onChange={(e) => setForm({ ...form, img: e.target.value })}
-                  />
+                  <Button variant="outlined" component="label" fullWidth>
+                    Upload Image
+                    <input
+                      type="file"
+                      hidden
+                      accept="image/*"
+                      onChange={(e) => setImage(e.target.files[0])}
+                    />
+                  </Button>
+
+                  {image && (
+                    <Typography sx={{ mt: 1, fontSize: 12 }}>
+                      {image.name}
+                    </Typography>
+                  )}
                 </Grid>
               )}
 
-              {/* RULES */}
               {currentName === "rules" && (
                 <Grid item xs={6}>
                   <TextField
@@ -225,13 +254,7 @@ export default function AdminPage() {
 
           <Box mt={4}>
             {data.map((item) => (
-              <Card
-                key={item._id}
-                sx={{
-                  mb: 2,
-                  background: "rgba(255,255,255,0.05)",
-                }}
-              >
+              <Card key={item._id} sx={{ mb: 2 }}>
                 <CardContent
                   sx={{
                     display: "flex",
