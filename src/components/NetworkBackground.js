@@ -13,18 +13,20 @@ export default function NetworkBackground() {
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+
+      // regenerate particles on resize
+      particles = [];
+      for (let i = 0; i < num; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 1,
+          vy: (Math.random() - 0.5) * 1,
+        });
+      }
     };
 
     resize();
-
-    for (let i = 0; i < num; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 1,
-        vy: (Math.random() - 0.5) * 1,
-      });
-    }
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -43,7 +45,7 @@ export default function NetworkBackground() {
         ctx.fill();
 
         // connecting lines
-        for (let j = i + 1; j < num; j++) {
+        for (let j = i + 1; j < particles.length; j++) {
           const dx = p.x - particles[j].x;
           const dy = p.y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);

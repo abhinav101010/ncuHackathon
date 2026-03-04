@@ -1,13 +1,15 @@
-import { Container, Typography, Box } from "@mui/material";
+import { Container, Typography, Box, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Countdown from "../components/Countdown";
-import ThemePage from "./ThemePage"
+import ThemePage from "./ThemePage";
 import Sponsors from "../components/Sponsors";
 import EventPage from "./EventPage";
 import RulePage from "./RulePage";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const words = [
     "THE FUTURE",
     "INNOVATION",
@@ -47,71 +49,121 @@ export default function HomePage() {
 
   return (
     <>
-    <Container
-      maxWidth="lg"
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
-      }}
-    >
-      {/* Main Heading */}
-      <Typography
-        variant="h2"
+      <Container
+        maxWidth="lg"
         sx={{
-          fontWeight: "bold",
-          mb: 2,
+          minHeight: "100vh",
+          pt: 12,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
         }}
       >
-        BUILD{" "}
-        <Box
-          component="span"
-          sx={{
-            background:
-              "linear-gradient(90deg,#00ffa3,#00c6ff,#ff0080)",
-            backgroundSize: "200% auto",
-            WebkitBackgroundClip: "text",
-            color: "transparent",
-            animation: "gradientMove 4s linear infinite",
-          }}
-        >
-          {displayedText}
-        </Box>
-        <Box
-          component="span"
-          sx={{
-            borderRight: "3px solid #00ffa3",
-            ml: 1,
-            animation: "blink 1s infinite",
-          }}
-        />
-      </Typography>
-
-      {/* Subtitle */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-      >
+        {/* Hackathon Title */}
         <Typography
-          variant="h6"
-          sx={{ color: "gray", maxWidth: 600, mb: 4 }}
+          variant="h4"
+          sx={{
+            mb: 2,
+            letterSpacing: 4,
+            fontWeight: "bold",
+            color: "#00ffa3",
+          }}
         >
-          Join visionary developers, designers, and innovators
-          to create breakthrough solutions in just 48 hours.
-          Code. Collaborate. Conquer.
+          NCU HACKATHON 2026
         </Typography>
-      </motion.div>
 
-      {/* Countdown */}
-      <Countdown />
+        {/* Main Heading */}
+        <Typography
+          variant="h2"
+          sx={{
+            fontWeight: "bold",
+            mb: 2,
+          }}
+        >
+          BUILD{" "}
+          <Box
+            component="span"
+            sx={{
+              background: "linear-gradient(90deg,#00ffa3,#00c6ff,#ff0080)",
+              backgroundSize: "200% auto",
+              WebkitBackgroundClip: "text",
+              color: "transparent",
+              animation: "gradientMove 4s linear infinite",
+            }}
+          >
+            {displayedText}
+          </Box>
+          <Box
+            component="span"
+            sx={{
+              borderRight: "3px solid #00ffa3",
+              ml: 1,
+              animation: "blink 1s infinite",
+            }}
+          />
+        </Typography>
 
-      {/* Animations */}
-      <style>
-        {`
+        {/* Hackathon Info */}
+        <Typography
+          variant="body1"
+          sx={{
+            color: "#00ffa3",
+            mb: 2,
+            fontWeight: "bold",
+          }}
+        >
+          48 Hour Hackathon • ₹1L+ Prize Pool • 500+ Hackers
+        </Typography>
+
+        {/* Subtitle */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <Typography variant="h6" sx={{ color: "gray", maxWidth: 600, mb: 4 }}>
+            Join visionary developers, designers, and innovators to create
+            breakthrough solutions in just 48 hours. Code. Collaborate. Conquer.
+          </Typography>
+        </motion.div>
+
+        {/* CTA Buttons */}
+        <Box sx={{ mb: 5 }}>
+          <Button
+            variant="contained"
+            onClick={() => navigate("/register")}
+            sx={{
+              mr: 2,
+              background: "#ff0080",
+              fontWeight: "bold",
+              padding: "10px 28px",
+            }}
+          >
+            Register Now
+          </Button>
+
+          <Button
+            variant="outlined"
+            onClick={() => navigate("/themes")}
+            sx={{
+              borderColor: "#00ffa3",
+              color: "#00ffa3",
+              fontWeight: "bold",
+              padding: "10px 28px",
+            }}
+          >
+            Explore Themes
+          </Button>
+        </Box>
+
+        {/* Countdown */}
+        <Countdown />
+
+        {/* Animations */}
+        <style>
+          {`
           @keyframes gradientMove {
             0% { background-position: 0% center; }
             100% { background-position: 200% center; }
@@ -122,14 +174,14 @@ export default function HomePage() {
             25%, 75% { opacity: 0; }
           }
         `}
-      </style>
-    </Container>
+        </style>
+      </Container>
 
-    <Sponsors/>
-    <ThemePage/>
-    <EventPage/>
-    <RulePage/>
-    <Sponsors/>
+      {/* Other Sections */}
+      <Sponsors />
+      <ThemePage />
+      <EventPage />
+      <RulePage />
     </>
   );
 }

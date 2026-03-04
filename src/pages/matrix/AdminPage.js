@@ -67,10 +67,7 @@ export default function AdminPage() {
       ? `${API}/${currentName}/${editingId}`
       : `${API}/${currentName}`;
 
-    const payload =
-      currentName === "rules"
-        ? { text: form.text }
-        : form;
+    const payload = currentName === "rules" ? { text: form.text } : form;
 
     await fetch(url, {
       method,
@@ -187,9 +184,7 @@ export default function AdminPage() {
                     label="Sponsor Name"
                     fullWidth
                     value={form.name || ""}
-                    onChange={(e) =>
-                      setForm({ ...form, name: e.target.value })
-                    }
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
                   />
                 </Grid>
               )}
@@ -201,9 +196,7 @@ export default function AdminPage() {
                     label="Image URL"
                     fullWidth
                     value={form.img || ""}
-                    onChange={(e) =>
-                      setForm({ ...form, img: e.target.value })
-                    }
+                    onChange={(e) => setForm({ ...form, img: e.target.value })}
                   />
                 </Grid>
               )}
@@ -215,9 +208,7 @@ export default function AdminPage() {
                     label="Rule Text"
                     fullWidth
                     value={form.text || ""}
-                    onChange={(e) =>
-                      setForm({ ...form, text: e.target.value })
-                    }
+                    onChange={(e) => setForm({ ...form, text: e.target.value })}
                   />
                 </Grid>
               )}
@@ -256,9 +247,7 @@ export default function AdminPage() {
                     </Typography>
 
                     {item.desc && (
-                      <Typography color="gray">
-                        {item.desc}
-                      </Typography>
+                      <Typography color="gray">{item.desc}</Typography>
                     )}
 
                     {item.date && (
@@ -294,10 +283,7 @@ export default function AdminPage() {
           <Toolbar sx={{ justifyContent: "space-between" }}>
             <Typography variant="h6">Registrations</Typography>
 
-            <Button
-              startIcon={<RefreshIcon />}
-              onClick={loadRegistrations}
-            >
+            <Button startIcon={<RefreshIcon />} onClick={loadRegistrations}>
               Refresh
             </Button>
           </Toolbar>

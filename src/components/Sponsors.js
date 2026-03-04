@@ -1,36 +1,17 @@
-import { Container, Box, CircularProgress } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import sponsors from "../data-static/sponsors";
 
 export default function Sponsors() {
-  const [sponsors, setSponsors] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/sponsors")
-      .then((res) => res.json())
-      .then((data) => {
-        setSponsors(data);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading)
-    return (
-      <Box sx={{ textAlign: "center", py: 10 }}>
-        <CircularProgress />
-      </Box>
-    );
-
   const sponsorsLoop = [...sponsors, ...sponsors];
 
   return (
     <Container sx={{ py: 12 }}>
       <Box
         sx={{
-          // overflow: "hidden",
           width: "100%",
           mt: 6,
+          overflow: "hidden",
         }}
       >
         <motion.div
@@ -38,7 +19,7 @@ export default function Sponsors() {
           transition={{
             repeat: Infinity,
             ease: "linear",
-            duration: 20,
+            duration: 25,
           }}
           style={{
             display: "flex",
@@ -46,9 +27,9 @@ export default function Sponsors() {
             width: "max-content",
           }}
         >
-          {sponsorsLoop.map((sponsor, i) => (
+          {sponsorsLoop.map((sponsor) => (
             <Box
-              key={i}
+              key={sponsor.name}
               sx={{
                 background: "rgba(255,255,255,0.06)",
                 border: "1px solid rgba(0,255,163,0.2)",
@@ -68,8 +49,8 @@ export default function Sponsors() {
             >
               <Box
                 component="img"
-                src={sponsor.img}
-                alt={sponsor.name}
+                src={sponsor?.img}
+                alt={sponsor?.name}
                 sx={{
                   height: 55,
                   objectFit: "contain",

@@ -16,6 +16,7 @@ export default function EventCard({ event }) {
           background: "rgba(255,255,255,0.05)",
           backdropFilter: "blur(20px)",
           borderRadius: "16px",
+          border: "1px solid rgba(255,255,255,0.08)",
           transition: "0.4s",
           transform: "rotate(1deg)",
           "&:hover": {
@@ -26,25 +27,22 @@ export default function EventCard({ event }) {
       >
         <CardMedia
           component="img"
-          image={event.img}
-          sx={{ height: 200 }}
+          image={event?.img}
+          alt={event?.title}
+          sx={{ height: 200, objectFit: "cover" }}
         />
 
         <CardContent>
-          <Typography variant="h6" fontWeight="bold">
-            {event.title}
+          <Typography variant="h6" fontWeight="bold" sx={{ mb: 0.5 }}>
+            {event?.title}
           </Typography>
 
-          <Typography
-            variant="body2"
-            color="secondary"
-            sx={{ mb: 1 }}
-          >
-            {event.date}
+          <Typography variant="body2" sx={{ color: "#ff0080", mb: 1 }}>
+            {event?.date}
           </Typography>
 
-          <Typography variant="body2" color="gray">
-            {event.desc}
+          <Typography variant="body2" sx={{ color: "gray" }}>
+            {event?.desc}
           </Typography>
         </CardContent>
       </Card>

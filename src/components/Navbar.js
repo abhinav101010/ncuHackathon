@@ -1,17 +1,43 @@
-import { AppBar, Toolbar, Typography, Button, Box, Select, MenuItem } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function Navbar({ themeName, setThemeName }) {
   return (
-    <AppBar position="fixed" sx={{ background: "rgba(0,0,0,0.6)" }}>
+    <AppBar
+      position="fixed"
+      sx={{
+        background: "rgba(0,0,0,0.6)",
+        backdropFilter: "blur(10px)",
+        borderBottom: "1px solid rgba(255,255,255,0.1)",
+      }}
+    >
       <Toolbar>
-        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          HACKATHON
+        {/* Logo */}
+        <Typography
+          component={Link}
+          to="/"
+          variant="h6"
+          sx={{
+            fontWeight: "bold",
+            textDecoration: "none",
+            color: "#00ffa3",
+            letterSpacing: 1,
+          }}
+        >
+          NCU Hackathon
         </Typography>
 
         <Box sx={{ flexGrow: 1 }} />
 
-        {/* THEME SELECTOR */}
+        {/* Theme Selector */}
         <Select
           size="small"
           value={themeName}
@@ -20,6 +46,7 @@ export default function Navbar({ themeName, setThemeName }) {
             mr: 3,
             color: "white",
             border: "1px solid rgba(255,255,255,0.2)",
+            "& .MuiSvgIcon-root": { color: "white" },
           }}
         >
           <MenuItem value="dark">Dark Neon</MenuItem>
@@ -27,16 +54,33 @@ export default function Navbar({ themeName, setThemeName }) {
           <MenuItem value="student">Student</MenuItem>
         </Select>
 
-        <Button component={Link} to="/">Home</Button>
-        <Button component={Link} to="/faq">FAQ's</Button>
-        <Button component={Link} to="/about">About US</Button>
-        <Button component={Link} to="/contact">Contact US</Button>
+        {/* Navigation Links */}
+        <Button component={Link} to="/" sx={{ mx: 1, color: "white" }}>
+          Home
+        </Button>
 
+        <Button component={Link} to="/faq" sx={{ mx: 1, color: "white" }}>
+          FAQ
+        </Button>
+
+        <Button component={Link} to="/about" sx={{ mx: 1, color: "white" }}>
+          About
+        </Button>
+
+        <Button component={Link} to="/contact" sx={{ mx: 1, color: "white" }}>
+          Contact
+        </Button>
+
+        {/* Register Button */}
         <Button
           component={Link}
           to="/register"
           variant="contained"
-          color="secondary"
+          sx={{
+            ml: 2,
+            background: "#ff0080",
+            fontWeight: "bold",
+          }}
         >
           Register
         </Button>

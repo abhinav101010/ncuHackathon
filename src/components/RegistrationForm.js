@@ -13,16 +13,15 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  CircularProgress,
 } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
-// import themes from "../data/themes";
-import { useEffect } from "react";
+import themes from "../data-static/themes";
 
 export default function RegistrationForm() {
   const [step, setStep] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedThemeObj, setSelectedThemeObj] = useState(null);
+
   const [formData, setFormData] = useState({
     teamName: "",
     teamLead: "",
@@ -36,22 +35,8 @@ export default function RegistrationForm() {
     selectedTheme: "",
     ideaDescription: "",
   });
-  const containerWidth = step === 3 ? "md" : "sm";
-  const [themes, setThemes] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/themes")
-      .then((res) => res.json())
-      .then((data) => {
-        setThemes(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, []);
+  const containerWidth = step === 3 ? "md" : "sm";
 
   // STEP 1 VALIDATION
   const handleNextStep1 = () => {
@@ -87,29 +72,14 @@ export default function RegistrationForm() {
     setStep(3);
   };
 
-  const handleSubmit = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/api/registrations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+  const handleSubmit = () => {
+    toast.success("Registration submitted 🚀");
 
-      const data = await response.json();
+    console.log("Form Data:", formData);
 
-      if (response.ok) {
-        toast.success("Registration successful 🚀");
-
-        alert(`Your Team ID is: ${data.teamId}`);
-      } else {
-        toast.error(data.error);
-      }
-    } catch (error) {
-      toast.error("Server error");
-    }
+    alert("Registration submitted successfully!");
   };
+
   return (
     <Container
       maxWidth={containerWidth}
@@ -122,9 +92,6 @@ export default function RegistrationForm() {
     >
       <Toaster />
 
-      {loading ? (
-        <CircularProgress />
-      ) : (
       <Box
         sx={{
           width: "100%",
@@ -165,11 +132,6 @@ export default function RegistrationForm() {
               fullWidth
               label="Phone Number"
               margin="normal"
-              inputProps={{
-                inputMode: "numeric",
-                pattern: "[0-9]*",
-                maxLength: 10,
-              }}
               value={formData.phone}
               onChange={(e) =>
                 setFormData({
@@ -277,38 +239,32 @@ export default function RegistrationForm() {
             <Typography sx={{ mb: 3 }}>Select a Theme</Typography>
 
             <Grid container spacing={3} justifyContent="center">
-              {themes.map((theme, index) => {
-                const isSelected = formData.selectedTheme === theme.title;
-
-                return (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
-                    <Card
-                      sx={{
-                        cursor: "pointer",
-                        border: isSelected
+              {themes.map((theme, index) => (
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Card
+                    sx={{
+                      cursor: "pointer",
+                      border:
+                        formData.selectedTheme === theme.title
                           ? "2px solid #00ffa3"
                           : "1px solid rgba(255,255,255,0.1)",
-                          ":hover": {
-                            border: "2px solid #00ffa3",
-                          },
-                      }}
-                      onClick={() => {
-                        setSelectedThemeObj(theme);
-                        setDialogOpen(true);
-                      }}
-                    >
-                      <CardMedia
-                        component="img"
-                        image={theme.img}
-                        sx={{ height: 160 }}
-                      />
-                      <CardContent>
-                        <Typography>{theme.title}</Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                );
-              })}
+                    }}
+                    onClick={() => {
+                      setSelectedThemeObj(theme);
+                      setDialogOpen(true);
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      image={theme.img}
+                      sx={{ height: 160 }}
+                    />
+                    <CardContent>
+                      <Typography>{theme.title}</Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
             </Grid>
 
             <TextField
@@ -343,7 +299,6 @@ export default function RegistrationForm() {
           </>
         )}
       </Box>
-      )}
 
       {/* THEME DIALOG */}
       <Dialog
@@ -351,12 +306,6 @@ export default function RegistrationForm() {
         onClose={() => setDialogOpen(false)}
         maxWidth="sm"
         fullWidth
-        PaperProps={{
-          sx: {
-            backgroundColor: "#0f0f0f",
-            borderRadius: 3,
-          },
-        }}
       >
         {selectedThemeObj && (
           <>
@@ -369,8 +318,10 @@ export default function RegistrationForm() {
               />
               <Typography>{selectedThemeObj.desc}</Typography>
             </DialogContent>
+
             <DialogActions>
               <Button onClick={() => setDialogOpen(false)}>Close</Button>
+
               <Button
                 variant="contained"
                 onClick={() => {
