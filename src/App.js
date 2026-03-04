@@ -13,13 +13,13 @@ import RulePage from "./pages/RulePage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import ThemePage from "./pages/ThemePage";
-import LoginPage from "./pages/LoginPage";
-import AdminPage from "./pages/AdminPage";
-import Dashboard from "./pages/Dashboard";
+import LoginPage from "./pages/matrix/LoginPage";
+import AdminPage from "./pages/matrix/AdminPage";
+import Dashboard from "./pages/matrix/Dashboard";
 import FAQ from "./pages/FAQ";
 import AboutPage from "./pages/AboutPage";
 import ContactUsPage from "./pages/ContactUsPage";
-import TeamLoginPage from "./pages/TeamLoginPage";
+import TeamLoginPage from "./pages/matrix/TeamLoginPage";
 import ProtectedTeamRoute from "./components/ProtectedTeamRoute";
 
 function App() {
@@ -73,7 +73,6 @@ function App() {
         </Routes>
 
         {/* Hide Sponsors + Footer for admin pages */}
-        {!isAdminRoute && <Sponsors />}
         {!isAdminRoute && <Footer />}
       </Box>
     </ThemeProvider>

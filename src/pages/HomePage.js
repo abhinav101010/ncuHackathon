@@ -2,6 +2,10 @@ import { Container, Typography, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Countdown from "../components/Countdown";
+import ThemePage from "./ThemePage"
+import Sponsors from "../components/Sponsors";
+import EventPage from "./EventPage";
+import RulePage from "./RulePage";
 
 export default function HomePage() {
   const words = [
@@ -42,6 +46,7 @@ export default function HomePage() {
   }, [displayedText, isDeleting, wordIndex, words]);
 
   return (
+    <>
     <Container
       maxWidth="lg"
       sx={{
@@ -119,5 +124,12 @@ export default function HomePage() {
         `}
       </style>
     </Container>
+
+    <Sponsors/>
+    <ThemePage/>
+    <EventPage/>
+    <RulePage/>
+    <Sponsors/>
+    </>
   );
 }

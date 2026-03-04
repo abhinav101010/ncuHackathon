@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 
 export default function Countdown() {
-  const hackathonDate = new Date("2026-03-26T11:59:59");
-
+  const hackathonDate = new Date("2026-03-26T00:00:00");
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,

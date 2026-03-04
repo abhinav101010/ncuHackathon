@@ -35,7 +35,6 @@ export default function AdminPage() {
   const [editingId, setEditingId] = useState(null);
 
   const names = ["themes", "events", "rules", "sponsors"];
-
   const currentName = names[tab];
 
   // ================= LOAD =================
@@ -50,12 +49,14 @@ export default function AdminPage() {
 
   const loadData = async () => {
     const res = await fetch(`${API}/${currentName}`);
-    setData(await res.json());
+    const json = await res.json();
+    setData(json);
   };
 
   const loadRegistrations = async () => {
     const res = await fetch(`${API}/registrations`);
-    setRegistrations(await res.json());
+    const json = await res.json();
+    setRegistrations(json);
   };
 
   // ================= CREATE / UPDATE =================
@@ -73,7 +74,9 @@ export default function AdminPage() {
 
     await fetch(url, {
       method,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(payload),
     });
 
@@ -88,6 +91,7 @@ export default function AdminPage() {
     await fetch(`${API}/${currentName}/${id}`, {
       method: "DELETE",
     });
+
     loadData();
   };
 
@@ -109,6 +113,7 @@ export default function AdminPage() {
     await fetch(`${API}/registrations/${id}`, {
       method: "DELETE",
     });
+
     loadRegistrations();
   };
 
@@ -134,61 +139,76 @@ export default function AdminPage() {
         <>
           <Box mt={3}>
             <Grid container spacing={2}>
-              {currentName !== "rules" && (
+              {/* THEMES & EVENTS */}
+              {(currentName === "themes" || currentName === "events") && (
                 <>
-                  {(currentName === "themes" ||
-                    currentName === "events") && (
-                    <>
-                      <Grid item xs={4}>
-                        <TextField
-                          label="Title"
-                          fullWidth
-                          value={form.title || ""}
-                          onChange={(e) =>
-                            setForm({ ...form, title: e.target.value })
-                          }
-                        />
-                      </Grid>
+                  <Grid item xs={4}>
+                    <TextField
+                      label="Title"
+                      fullWidth
+                      value={form.title || ""}
+                      onChange={(e) =>
+                        setForm({ ...form, title: e.target.value })
+                      }
+                    />
+                  </Grid>
 
-                      <Grid item xs={4}>
-                        <TextField
-                          label="Description"
-                          fullWidth
-                          value={form.desc || ""}
-                          onChange={(e) =>
-                            setForm({ ...form, desc: e.target.value })
-                          }
-                        />
-                      </Grid>
-                    </>
-                  )}
+                  <Grid item xs={4}>
+                    <TextField
+                      label="Description"
+                      fullWidth
+                      value={form.desc || ""}
+                      onChange={(e) =>
+                        setForm({ ...form, desc: e.target.value })
+                      }
+                    />
+                  </Grid>
 
-                  {currentName === "sponsors" && (
+                  {/* EVENT DATE */}
+                  {currentName === "events" && (
                     <Grid item xs={4}>
                       <TextField
-                        label="Sponsor Name"
+                        label="Event Date"
                         fullWidth
-                        value={form.name || ""}
+                        value={form.date || ""}
                         onChange={(e) =>
-                          setForm({ ...form, name: e.target.value })
+                          setForm({ ...form, date: e.target.value })
                         }
                       />
                     </Grid>
                   )}
-
-                  <Grid item xs={4}>
-                    <TextField
-                      label="Image URL"
-                      fullWidth
-                      value={form.img || ""}
-                      onChange={(e) =>
-                        setForm({ ...form, img: e.target.value })
-                      }
-                    />
-                  </Grid>
                 </>
               )}
 
+              {/* SPONSORS */}
+              {currentName === "sponsors" && (
+                <Grid item xs={4}>
+                  <TextField
+                    label="Sponsor Name"
+                    fullWidth
+                    value={form.name || ""}
+                    onChange={(e) =>
+                      setForm({ ...form, name: e.target.value })
+                    }
+                  />
+                </Grid>
+              )}
+
+              {/* IMAGE FIELD */}
+              {currentName !== "rules" && (
+                <Grid item xs={4}>
+                  <TextField
+                    label="Image URL"
+                    fullWidth
+                    value={form.img || ""}
+                    onChange={(e) =>
+                      setForm({ ...form, img: e.target.value })
+                    }
+                  />
+                </Grid>
+              )}
+
+              {/* RULES */}
               {currentName === "rules" && (
                 <Grid item xs={6}>
                   <TextField
@@ -216,7 +236,10 @@ export default function AdminPage() {
             {data.map((item) => (
               <Card
                 key={item._id}
-                sx={{ mb: 2, background: "rgba(255,255,255,0.05)" }}
+                sx={{
+                  mb: 2,
+                  background: "rgba(255,255,255,0.05)",
+                }}
               >
                 <CardContent
                   sx={{
@@ -233,7 +256,15 @@ export default function AdminPage() {
                     </Typography>
 
                     {item.desc && (
-                      <Typography color="gray">{item.desc}</Typography>
+                      <Typography color="gray">
+                        {item.desc}
+                      </Typography>
+                    )}
+
+                    {item.date && (
+                      <Typography color="gray" sx={{ fontSize: 12 }}>
+                        {item.date}
+                      </Typography>
                     )}
                   </Box>
 
@@ -262,6 +293,7 @@ export default function AdminPage() {
         <Paper sx={{ mt: 4 }}>
           <Toolbar sx={{ justifyContent: "space-between" }}>
             <Typography variant="h6">Registrations</Typography>
+
             <Button
               startIcon={<RefreshIcon />}
               onClick={loadRegistrations}

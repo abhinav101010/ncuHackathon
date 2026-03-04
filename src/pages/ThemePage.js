@@ -15,12 +15,16 @@ import SectionHeading from "../components/SectionHeading";
 // import themes from "../data/themes";
 import { useEffect } from "react";
 import ThemeCard from "../components/ThemeCard";
+import Sponsors from "../components/Sponsors";
+import { useLocation } from "react-router-dom";
 
 export default function ThemePage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState(null);
   const [themes, setThemes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const isThemes = location.pathname.startsWith("/themes");
 
   useEffect(() => {
     fetch("http://localhost:5000/api/themes")
@@ -118,6 +122,8 @@ export default function ThemePage() {
           </>
         )}
       </Dialog>
+
+      {isThemes && <Sponsors/>}
     </>
   );
 }

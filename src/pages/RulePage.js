@@ -3,11 +3,14 @@ import { Container, Box, CircularProgress } from "@mui/material";
 import SectionHeading from "../components/SectionHeading";
 // import rules from "../data/rules";
 import { useState, useEffect } from "react";
+import Sponsors from "../components/Sponsors";
+import { useLocation } from "react-router-dom";
 
 export default function RulePage() {
   const [rules, setRules] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const location = useLocation();
+  const isRules = location.pathname.startsWith("/rules");
   useEffect(() => {
     fetch("http://localhost:5000/api/rules")
       .then((res) => res.json())
@@ -17,6 +20,7 @@ export default function RulePage() {
       });
   }, []);
   return (
+    <>
     <Container sx={{ py: 12, position: "relative" }}>
       <SectionHeading>Rules</SectionHeading>
       {loading ? (
@@ -37,5 +41,7 @@ export default function RulePage() {
         ))
       )}
     </Container>
+    {isRules &&<Sponsors/>}
+    </>
   );
 }

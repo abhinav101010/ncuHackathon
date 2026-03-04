@@ -239,7 +239,7 @@ export default function RegistrationForm() {
 
             <TextField
               fullWidth
-              label="Team Login Email"
+              label="Team Login Username"
               margin="normal"
               type="email"
               value={formData.email}

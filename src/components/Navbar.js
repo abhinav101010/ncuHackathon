@@ -12,9 +12,9 @@ export default function Navbar() {
         <Box sx={{ flexGrow: 1 }} />
 
         <Button component={Link} to="/">Home</Button>
-        <Button component={Link} to="/themes">Themes</Button>
-        <Button component={Link} to="/events">Events</Button>
-        <Button component={Link} to="/rules">Rules</Button>
+        {/* <Button component={Link} to="/themes">Themes</Button> */}
+        {/* <Button component={Link} to="/events">Events</Button> */}
+        {/* <Button component={Link} to="/rules">Rules</Button> */}
         <Button component={Link} to="/about">About US</Button>
         <Button component={Link} to="/contact">Contact US</Button>
         <Button component={Link} to="/register" variant="contained" color="secondary">

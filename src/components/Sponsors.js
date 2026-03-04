@@ -1,8 +1,6 @@
 import { Container, Box, CircularProgress } from "@mui/material";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import SectionHeading from "./SectionHeading";
-// import sponsors from "../data/sponsors";
 
 export default function Sponsors() {
   const [sponsors, setSponsors] = useState([]);
@@ -17,41 +15,69 @@ export default function Sponsors() {
       });
   }, []);
 
-  if (loading) return <CircularProgress />;
+  if (loading)
+    return (
+      <Box sx={{ textAlign: "center", py: 10 }}>
+        <CircularProgress />
+      </Box>
+    );
+
+  const sponsorsLoop = [...sponsors, ...sponsors];
 
   return (
-    <Container sx={{ py: 12, background: "rgba(255,255,255,0.05)", borderRadius: 2 }}>
+    <Container sx={{ py: 12 }}>
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: 6,
+          // overflow: "hidden",
+          width: "100%",
+          mt: 6,
         }}
       >
-        {sponsors.map((sponsor, i) => (
-          <motion.div
-            key={i}
-            whileHover={{ scale: 1.15, y: -8 }}
-            transition={{ type: "spring", stiffness: 200 }}
-          >
+        <motion.div
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{
+            repeat: Infinity,
+            ease: "linear",
+            duration: 20,
+          }}
+          style={{
+            display: "flex",
+            gap: "40px",
+            width: "max-content",
+          }}
+        >
+          {sponsorsLoop.map((sponsor, i) => (
             <Box
-              component="img"
-              src={sponsor.img}
-              alt={sponsor.name}
+              key={i}
               sx={{
-                height: 50,
-                objectFit: "contain",
-                filter: "grayscale(100%) brightness(0.8)",
-                transition: "0.4s",
+                background: "rgba(255,255,255,0.06)",
+                border: "1px solid rgba(0,255,163,0.2)",
+                borderRadius: "12px",
+                padding: "16px 28px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                minWidth: "140px",
+                transition: "0.3s",
+                backdropFilter: "blur(6px)",
                 "&:hover": {
-                  filter: "grayscale(0%) brightness(1)",
+                  transform: "translateY(-4px)",
+                  boxShadow: "0 0 20px rgba(0,255,163,0.4)",
                 },
               }}
-            />
-          </motion.div>
-        ))}
+            >
+              <Box
+                component="img"
+                src={sponsor.img}
+                alt={sponsor.name}
+                sx={{
+                  height: 55,
+                  objectFit: "contain",
+                }}
+              />
+            </Box>
+          ))}
+        </motion.div>
       </Box>
     </Container>
   );
