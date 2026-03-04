@@ -2,6 +2,7 @@ import { Container, Box, CircularProgress, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
+import { API } from "../utils/api";
 
 export default function Sponsors() {
   const [sponsors, setSponsors] = useState([]);
@@ -10,7 +11,7 @@ export default function Sponsors() {
   const theme = useTheme();
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/sponsors")
+    fetch(`${API}/api/sponsors`)
       .then((res) => res.json())
       .then((data) => {
         setSponsors(data);

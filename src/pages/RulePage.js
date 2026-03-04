@@ -4,6 +4,7 @@ import { useTheme } from "@mui/material/styles";
 import SectionHeading from "../components/SectionHeading";
 import Sponsors from "../components/Sponsors";
 import { useLocation } from "react-router-dom";
+import { API } from "../utils/api";
 
 export default function RulePage() {
   const [rules, setRules] = useState([]);
@@ -15,7 +16,7 @@ export default function RulePage() {
   const isRules = location.pathname.startsWith("/rules");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/rules")
+    fetch(`${API}/api/rules`)
       .then((res) => res.json())
       .then((data) => {
         setRules(data);

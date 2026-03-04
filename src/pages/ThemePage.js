@@ -16,6 +16,7 @@ import SectionHeading from "../components/SectionHeading";
 import ThemeCard from "../components/ThemeCard";
 import Sponsors from "../components/Sponsors";
 import { useLocation } from "react-router-dom";
+import { API } from "../utils/api";
 
 export default function ThemePage() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -29,7 +30,7 @@ export default function ThemePage() {
   const isThemes = location.pathname.startsWith("/themes");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/themes")
+    fetch(`${API}/api/themes`)
       .then((res) => res.json())
       .then((data) => {
         setThemes(data);

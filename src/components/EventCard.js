@@ -1,6 +1,7 @@
 import { Grid, Box, Paper, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
+import { API } from '../utils/api'
 
 export default function EventCard({ event, index }) {
   const theme = useTheme();
@@ -57,7 +58,7 @@ export default function EventCard({ event, index }) {
           >
             <Box
               component="img"
-              src={event.img}
+              src={`${API}${event.img}`}
               alt={event.title}
               sx={{
                 width: "100%",

@@ -7,6 +7,7 @@ import {
   Paper,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { API } from "../../utils/api";
 
 export default function LoginPage() {
   const theme = useTheme();
@@ -20,7 +21,7 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/admin/login", {
+      const res = await fetch(`${API}/api/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

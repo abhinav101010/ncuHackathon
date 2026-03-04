@@ -4,6 +4,7 @@ import SectionHeading from "../components/SectionHeading";
 import Sponsors from "../components/Sponsors";
 import { useLocation } from "react-router-dom";
 import EventCard from "../components/EventCard";
+import { API } from "../utils/api";
 
 export default function EventPage() {
   const [events, setEvents] = useState([]);
@@ -13,7 +14,7 @@ export default function EventPage() {
   const isEvents = location.pathname.startsWith("/events");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/events")
+    fetch(`${API}/api/events`)
       .then((res) => res.json())
       .then((data) => {
         setEvents(data);

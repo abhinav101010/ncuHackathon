@@ -27,6 +27,7 @@ import { motion } from "framer-motion";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import toast, { Toaster } from "react-hot-toast";
+import { API } from "../utils/api";
 // import tracks from "../server/data/tracks.json";
 // import sponsors from "../server/data/sponsors.json";
 // import events from "../server/data/events.json";
@@ -371,7 +372,7 @@ export default function HackathonUI() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/registrations", {
+      const response = await fetch(`${API}/api/registrations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
