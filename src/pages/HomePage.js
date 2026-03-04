@@ -1,4 +1,3 @@
-javascript;
 import { Container, Typography, Box, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";

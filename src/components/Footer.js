@@ -1,4 +1,3 @@
-javascript;
 import { Box, Typography, Link } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";

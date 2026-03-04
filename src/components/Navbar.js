@@ -1,4 +1,3 @@
-javascript;
 import {
   AppBar,
   Toolbar,

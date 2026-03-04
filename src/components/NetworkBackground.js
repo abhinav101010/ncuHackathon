@@ -1,4 +1,3 @@
-javascript;
 import { useEffect, useRef } from "react";
 import { useTheme } from "@mui/material/styles";
 

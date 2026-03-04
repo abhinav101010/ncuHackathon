@@ -1,4 +1,3 @@
-javascript;
 import { Container, Box } from "@mui/material";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";

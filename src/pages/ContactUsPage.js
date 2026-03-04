@@ -1,4 +1,3 @@
-javascript;
 import React from "react";
 import { Container, Typography, Grid, Box, Button, Paper } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
