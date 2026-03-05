@@ -349,8 +349,8 @@ export default function RegistrationForm() {
                       >
                         <CardMedia
                           component="img"
-                          image={theme.img}
-                          sx={{ height: 160 }}
+                          image={`${API}${theme.img}`}
+                          sx={{ height: 160, objectFit: "cover" }}
                         />
                         <CardContent>
                           <Typography>{theme.title}</Typography>
