@@ -1,6 +1,18 @@
-import { Box, Typography, Link } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  Link,
+  IconButton,
+  Divider,
+} from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
+
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import EmailIcon from "@mui/icons-material/Email";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 export default function Footer() {
   const theme = useTheme();
@@ -9,130 +21,156 @@ export default function Footer() {
     <Box
       sx={{
         mt: 10,
-        py: 6,
-        px: 4,
-        textAlign: "center",
-
+        pt: 8,
+        pb: 4,
+        px: { xs: 3, md: 10 },
         background:
           theme.palette.mode === "light"
-            ? "linear-gradient(90deg,#ffffff,#f5f7fb,#ffffff)"
-            : "linear-gradient(90deg,#0a0a0a,#111,#0a0a0a)",
-
+            ? "linear-gradient(120deg,#ffffff,#f5f7fb,#ffffff)"
+            : "linear-gradient(120deg,#0a0a0a,#121212,#0a0a0a)",
         borderTop: `1px solid ${theme.palette.divider}`,
-
-        boxShadow: `0 -5px 20px ${theme.palette.primary.main}20`,
       }}
     >
-      {/* Hackathon Info */}
-      <Box mb={4}>
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: "bold",
-            mb: 1,
-            color: theme.palette.primary.main,
-          }}
-        >
-          NCU Hackathon 2026
-        </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{ color: theme.palette.text.secondary }}
-        >
-          Build. Innovate. Transform the future. Join developers, designers, and
-          innovators for a 48-hour journey of creativity and technology.
-        </Typography>
-      </Box>
-
-      {/* Quick Links */}
-      <Box mb={4}>
-        <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
-          Quick Links
-        </Typography>
-
-        <Typography>
-          <Link
-            component={RouterLink}
-            to="/"
-            underline="hover"
-            sx={{ color: theme.palette.primary.main }}
+      <Grid container spacing={5}>
+        {/* Brand */}
+        <Grid item xs={12} md={4}>
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: "bold",
+              color: theme.palette.primary.main,
+              mb: 2,
+            }}
           >
-            Home
-          </Link>
-        </Typography>
+            INNOVATHON 2026
+          </Typography>
 
-        <Typography>
-          <Link
-            component={RouterLink}
-            to="/faq"
-            underline="hover"
-            sx={{ color: theme.palette.primary.main }}
+          <Typography
+            variant="body2"
+            sx={{
+              color: theme.palette.text.secondary,
+              maxWidth: 350,
+            }}
           >
-            FAQ
-          </Link>
-        </Typography>
+            Build. Innovate. Transform the future. Join developers,
+            designers, and innovators for a 56-hour journey of
+            creativity and technology.
+          </Typography>
+        </Grid>
 
-        <Typography>
-          <Link
-            component={RouterLink}
-            to="/about"
-            underline="hover"
-            sx={{ color: theme.palette.primary.main }}
-          >
-            About Us
-          </Link>
-        </Typography>
+        {/* Quick Links */}
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+            Quick Links
+          </Typography>
 
-        <Typography>
-          <Link
-            component={RouterLink}
-            to="/contact"
-            underline="hover"
-            sx={{ color: theme.palette.primary.main }}
-          >
+          <Box display="flex" flexDirection="column" gap={1}>
+            <Link component={RouterLink} to="/" underline="hover">
+              Home
+            </Link>
+
+            <Link component={RouterLink} to="/faq" underline="hover">
+              FAQ
+            </Link>
+
+            <Link component={RouterLink} to="/about" underline="hover">
+              About Us
+            </Link>
+
+            <Link component={RouterLink} to="/contact" underline="hover">
+              Contact
+            </Link>
+          </Box>
+        </Grid>
+
+        {/* Contact */}
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
             Contact
-          </Link>
+          </Typography>
+
+          <Box display="flex" alignItems="center" gap={1} mb={1}>
+            <LocationOnIcon fontSize="small" />
+            <Typography variant="body2">
+              The NorthCap University
+            </Typography>
+          </Box>
+
+          <Typography
+            variant="body2"
+            sx={{ color: theme.palette.text.secondary, ml: 4 }}
+          >
+            Gurugram, Haryana
+          </Typography>
+
+          <Box display="flex" alignItems="center" gap={1} mt={1}>
+            {/* <EmailIcon fontSize="small" />
+            <Typography variant="body2">
+              hackathon@ncu.edu
+            </Typography> */}
+          </Box>
+        </Grid>
+
+        {/* Social */}
+        {/* <Grid item xs={12} md={2}>
+          <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+            Follow Us
+          </Typography>
+
+          <Box>
+            <IconButton
+              
+              sx={{
+                mr: 1,
+                transition: "0.3s",
+                "&:hover": {
+                  color: theme.palette.primary.main,
+                  transform: "scale(1.2)",
+                },
+              }}
+            >
+              <GitHubIcon />
+            </IconButton>
+
+            <IconButton
+              sx={{
+                mr: 1,
+                transition: "0.3s",
+                "&:hover": {
+                  color: theme.palette.primary.main,
+                  transform: "scale(1.2)",
+                },
+              }}
+            >
+              <LinkedInIcon />
+            </IconButton>
+
+            <IconButton
+              sx={{
+                transition: "0.3s",
+                "&:hover": {
+                  color: theme.palette.primary.main,
+                  transform: "scale(1.2)",
+                },
+              }}
+            >
+              <EmailIcon />
+            </IconButton>
+          </Box>
+        </Grid> */}
+      </Grid>
+
+      <Divider sx={{ my: 4 }} />
+
+      {/* Bottom */}
+      <Box textAlign="center">
+        <Typography
+          variant="caption"
+          sx={{ color: theme.palette.text.secondary }}
+        >
+          © 2026 INNOVATHON • Built with ❤️ by NCU Developers
         </Typography>
       </Box>
-
-      {/* Contact */}
-      <Box mb={4}>
-        <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
-          Contact
-        </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{ color: theme.palette.text.secondary }}
-        >
-          The NorthCap University
-        </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{ color: theme.palette.text.secondary }}
-        >
-          Gurugram, Haryana
-        </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{ color: theme.palette.text.secondary }}
-        >
-          hackathon@ncu.edu
-        </Typography>
-      </Box>
-
-      {/* Copyright */}
-      <Typography
-        variant="caption"
-        sx={{
-          color: theme.palette.text.secondary,
-        }}
-      >
-        © 2026 NCU Hackathon. All rights reserved.
-      </Typography>
     </Box>
   );
 }

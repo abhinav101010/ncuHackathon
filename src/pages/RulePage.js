@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Container, Box, Typography, CircularProgress } from "@mui/material";
+import {
+  Container,
+  Box,
+  Typography,
+  CircularProgress,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useTheme } from "@mui/material/styles";
 import SectionHeading from "../components/SectionHeading";
 import Sponsors from "../components/Sponsors";
@@ -7,18 +16,21 @@ import { useLocation } from "react-router-dom";
 import { API } from "../utils/api";
 
 export default function RulePage() {
-
   const theme = useTheme();
   const location = useLocation();
   const isRules = location.pathname.startsWith("/rules");
 
   const [rules, setRules] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState(false);
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   /* ---------------- LOAD RULES ---------------- */
 
   useEffect(() => {
-
     fetch(`${API}/api/rules`)
       .then((res) => res.json())
       .then((data) => {
@@ -29,13 +41,11 @@ export default function RulePage() {
         console.error("Failed to load rules:", err);
         setLoading(false);
       });
-
   }, []);
 
   return (
     <>
       <Container sx={{ py: 12, position: "relative" }}>
-
         <SectionHeading>Rules</SectionHeading>
 
         {loading ? (
@@ -43,59 +53,47 @@ export default function RulePage() {
             <CircularProgress />
           </Box>
         ) : (
+          rules.map((rule, i) => {
+            const [title, description] = rule.text.split(":");
 
-          rules.map((rule, i) => (
-
-            <Box
-              key={rule._id || i}
-              sx={{
-                p: 3,
-                my: 2,
-                borderRadius: 2,
-
-                background: theme.palette.background.paper,
-
-                border: `1px solid ${theme.palette.primary.main}`,
-
-                boxShadow: `0 0 15px ${theme.palette.primary.main}33`,
-
-                display: "flex",
-                alignItems: "center",
-                gap: 2,
-
-                transition: "0.3s",
-
-                "&:hover": {
-                  transform: "translateY(-3px)",
-                  boxShadow: `0 0 30px ${theme.palette.primary.main}66`,
-                },
-              }}
-            >
-
-              <Typography
+            return (
+              <Accordion
+                key={rule._id || i}
+                expanded={expanded === i}
+                onChange={handleChange(i)}
                 sx={{
-                  fontSize: "1.2rem",
-                  color: theme.palette.primary.main,
+                  my: 2,
+                  borderRadius: 2,
+                  background: theme.palette.background.paper,
+                  border: `1px solid ${theme.palette.primary.main}`,
+                  boxShadow: `0 0 15px ${theme.palette.primary.main}33`,
+                  transition: "0.3s",
+
+                  "&:hover": {
+                    boxShadow: `0 0 30px ${theme.palette.primary.main}66`,
+                  },
                 }}
               >
-                ⚡
-              </Typography>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography
+                    sx={{
+                      fontWeight: "bold",
+                      color: theme.palette.primary.main,
+                    }}
+                  >
+                    {title}
+                  </Typography>
+                </AccordionSummary>
 
-              <Typography
-                sx={{
-                  color: theme.palette.text.primary,
-                  fontSize: "1rem",
-                }}
-              >
-                {rule.text}
-              </Typography>
-
-            </Box>
-
-          ))
-
+                <AccordionDetails>
+                  <Typography sx={{ color: theme.palette.text.primary }}>
+                    {description}
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            );
+          })
         )}
-
       </Container>
 
       {isRules && <Sponsors />}

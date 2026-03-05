@@ -1,20 +1,32 @@
-import { Container, Typography, Box, Grid, Button } from "@mui/material";
+import { Container, Typography, Box, Grid, Button, Paper } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 export default function SponsorsPage() {
   const theme = useTheme();
 
   const sponsors = [
-    { title: "Gold Sponsor" },
-    { title: "Silver Sponsor" },
-    { title: "Community Partner" },
-    { title: "Tech Partner" },
+    { title: "Silver Sponsor", tier: "silver" },
+    { title: "Gold Sponsor", tier: "gold" },
+    { title: "Platinum Sponsor", tier: "platinum" },
+    { title: "Co-Title Sponsor", tier: "co" },
+    { title: "Title Sponsor", tier: "title" },
   ];
+
+  const contacts = [
+    {
+      name: "Aayush",
+      role: "Sponsorship",
+      phone: "919306101432",
+    },
+  ];
+
+  const message =
+    "Hi, I'm interested in sponsoring the INNOVATHON. Could you please share more details?";
 
   return (
     <Container maxWidth="lg" sx={{ mt: 12, mb: 12 }}>
-      
       {/* Page Title */}
 
       <Typography
@@ -29,81 +41,131 @@ export default function SponsorsPage() {
         Sponsors & Partners
       </Typography>
 
-      {/* Sponsors Section */}
+      {/* Sponsorship Tier Title */}
 
       <Typography
         variant="h5"
         sx={{
           textAlign: "center",
-          mb: 4,
+          mb: 8,
           color: theme.palette.text.primary,
         }}
       >
-        Our Sponsors
+        Sponsorship Tiers
       </Typography>
 
-      <Grid container spacing={4} justifyContent="center">
-        {sponsors.map((sponsor, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Box
-              sx={{
-                textAlign: "center",
-                p: 4,
-                borderRadius: 2,
+      {/* Sponsor Network Row */}
 
-                background: theme.palette.background.paper,
+      <Box sx={{ position: "relative", mt: 8 }}>
+        {/* Network Line */}
 
-                border: `1px solid ${theme.palette.primary.main}40`,
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: 0,
+            right: 0,
+            height: "3px",
+            background:
+              "linear-gradient(90deg, transparent, #00e5ff, #7c4dff, #00e5ff, transparent)",
+            opacity: 0.6,
+            zIndex: 0,
+          }}
+        />
 
-                transition: "0.3s",
+        <Grid
+          container
+          spacing={4}
+          justifyContent="center"
+          sx={{
+            flexWrap: { xs: "nowrap", md: "nowrap" },
+            overflowX: { xs: "auto", md: "visible" },
+            position: "relative",
+            zIndex: 2,
+            pb: 2,
+          }}
+        >
+          {sponsors.map((sponsor, index) => {
+            let scale = 1;
+            let glow = `0 0 15px ${theme.palette.primary.main}40`;
 
-                "&:hover": {
-                  border: `1px solid ${theme.palette.primary.main}`,
-                },
-              }}
-            >
-              {/* Logo Placeholder */}
+            if (sponsor.tier === "gold") glow = "0 0 25px #ffd70080";
+            if (sponsor.tier === "platinum") glow = "0 0 35px #e0e0ff";
+            if (sponsor.tier === "co") glow = "0 0 45px #00e5ff";
 
-              <Box
-                sx={{
-                  height: 80,
-                  mb: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 1,
-                  background: theme.palette.mode === "light"
-                    ? "#f5f5f5"
-                    : "rgba(255,255,255,0.05)",
-                }}
-              >
-                <Typography variant="body2" color="gray">
-                  Logo
-                </Typography>
-              </Box>
+            if (sponsor.tier === "title") {
+              glow = "0 0 80px #00e5ff";
+              scale = 1.35;
+            }
 
-              <Typography fontWeight="bold">
-                {sponsor.title}
-              </Typography>
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
+            return (
+              <Grid item key={index}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.12 }}
+                  viewport={{ once: true }}
+                >
+                  <Box
+                    sx={{
+                      width: 230,
+                      height: 180,
+                      textAlign: "center",
+                      p: 3,
+                      borderRadius: 3,
+                      background: theme.palette.background.paper,
+                      border: `1px solid ${theme.palette.primary.main}40`,
+                      boxShadow: glow,
+                      transform: `scale(${scale})`,
+                      transition: "0.35s",
+                      backdropFilter: "blur(10px)",
 
-      {/* Become a Sponsor Section */}
+                      "&:hover": {
+                        transform: `scale(${scale + 0.07})`,
+                        boxShadow: glow.replace("0 0", "0 0 100px"),
+                      },
+                    }}
+                  >
+                    {/* Logo */}
+
+                    <Box
+                      sx={{
+                        height: 85,
+                        mb: 2,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: 2,
+                        background:
+                          theme.palette.mode === "light"
+                            ? "#f5f5f5"
+                            : "rgba(255,255,255,0.05)",
+                      }}
+                    >
+                      Logo
+                    </Box>
+
+                    <Typography
+                      fontWeight="bold"
+                      variant={sponsor.tier === "title" ? "h5" : "h6"}
+                    >
+                      {sponsor.title}
+                    </Typography>
+                  </Box>
+                </motion.div>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Box>
+
+      {/* Become Sponsor Section */}
 
       <Box
         sx={{
-          mt: 12,
+          mt: 14,
           textAlign: "center",
-          maxWidth: 800,
-          mx: "auto",
-          p: 6,
-          borderRadius: 3,
-
-          background: theme.palette.background.paper,
-
-          border: `1px solid ${theme.palette.primary.main}40`,
+          mb: 6,
         }}
       >
         <Typography
@@ -120,28 +182,82 @@ export default function SponsorsPage() {
         <Typography
           sx={{
             color: theme.palette.text.secondary,
-            mb: 4,
+            mb: 6,
             lineHeight: 1.7,
+            maxWidth: 720,
+            mx: "auto",
           }}
         >
           Support the next generation of innovators by sponsoring the NCU
           Hackathon. Gain brand visibility, connect with talented developers,
           and showcase your technology to hundreds of participants.
         </Typography>
-
-        <Button
-          variant="contained"
-          component={Link} to="/contact"
-          sx={{
-            px: 5,
-            py: 1.5,
-            fontWeight: "bold",
-            letterSpacing: "0.5px",
-          }}
-        >
-          Contact for Sponsorship
-        </Button>
       </Box>
+
+      {/* Contact Cards */}
+
+      <Grid container spacing={4} justifyContent="center">
+        {contacts.map((person, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 4,
+                  textAlign: "center",
+                  borderRadius: 3,
+                  background: theme.palette.background.paper,
+                  border: `1px solid ${theme.palette.primary.main}40`,
+                  backdropFilter: "blur(10px)",
+                  transition: "0.3s",
+                  boxShadow: `0 0 15px ${theme.palette.primary.main}20`,
+
+                  "&:hover": {
+                    transform: "translateY(-6px)",
+                    boxShadow: `0 0 30px ${theme.palette.primary.main}50`,
+                  },
+                }}
+              >
+                <Typography variant="h6" fontWeight="bold">
+                  {person.name}
+                </Typography>
+
+                <Typography
+                  sx={{
+                    color: theme.palette.secondary.main,
+                    mb: 2,
+                  }}
+                >
+                  {person.role}
+                </Typography>
+
+                <Typography sx={{ mb: 3 }}>+{person.phone}</Typography>
+
+                <Button
+                  variant="contained"
+                  startIcon={<WhatsAppIcon />}
+                  href={`https://wa.me/${person.phone}?text=${encodeURIComponent(
+                    message
+                  )}`}
+                  target="_blank"
+                  sx={{
+                    borderRadius: "30px",
+                    px: 3,
+                    boxShadow: `0 0 15px ${theme.palette.primary.main}`,
+                  }}
+                >
+                  Message on WhatsApp
+                </Button>
+              </Paper>
+            </motion.div>
+          </Grid>
+        ))}
+      </Grid>
     </Container>
   );
 }

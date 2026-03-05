@@ -74,7 +74,7 @@ export default function HomePage() {
             color: theme.palette.primary.main,
           }}
         >
-          NCU HACKATHON 2026
+          INNOVATHON 2026
         </Typography>
 
         {/* Main Heading */}
@@ -117,7 +117,7 @@ export default function HomePage() {
             fontWeight: "bold",
           }}
         >
-          48 Hour Hackathon • ₹50k+ Prize Pool • 500+ Hackers
+          56 Hour Hackathon • ₹50k+ Prize Pool • 500+ Participants
         </Typography>
 
         {/* Subtitle */}
@@ -128,7 +128,7 @@ export default function HomePage() {
         >
           <Typography variant="h6" sx={{ color: "gray", maxWidth: 600, mb: 4 }}>
             Join visionary developers, designers, and innovators to create
-            breakthrough solutions in just 48 hours. Code. Collaborate. Conquer.
+            breakthrough solutions in just 56 hours. Code. Collaborate. Conquer.
           </Typography>
         </motion.div>
 

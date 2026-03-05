@@ -1,10 +1,10 @@
 import { Grid, Box, Paper, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
-import { API } from "../utils/api"
+import { API } from "../utils/api";
 
 export default function EventCard({ event, index }) {
-  const muiTheme = useTheme();
+  const theme = useTheme();
 
   const isReverse = index % 2 === 1;
 
@@ -32,20 +32,23 @@ export default function EventCard({ event, index }) {
           <Box
             sx={{
               p: 2,
-              background: muiTheme.palette.background.paper,
-              border: `1px solid ${muiTheme.palette.primary.main}`,
+              background: theme.palette.background.paper,
+              border: `1px solid ${theme.palette.divider}`,
               borderRadius: 3,
               backdropFilter: "blur(8px)",
-              boxShadow: `0 0 15px ${muiTheme.palette.primary.main}40`,
+
+              boxShadow: theme.shadows[2],
+
               maxWidth: 380,
               width: "100%",
               display: "flex",
               justifyContent: "center",
+
               transition: "0.3s",
 
               "&:hover": {
-                boxShadow: `0 0 35px ${muiTheme.palette.primary.main}66`,
                 transform: "translateY(-4px)",
+                boxShadow: theme.shadows[6],
               },
             }}
           >
@@ -69,15 +72,17 @@ export default function EventCard({ event, index }) {
             elevation={0}
             sx={{
               p: 4,
-              background: muiTheme.palette.background.paper,
-              border: `1px solid ${muiTheme.palette.primary.main}`,
+              background: theme.palette.background.paper,
+              border: `1px solid ${theme.palette.divider}`,
               borderRadius: 3,
               backdropFilter: "blur(8px)",
-              boxShadow: `0 0 20px ${muiTheme.palette.primary.main}30`,
+
+              boxShadow: theme.shadows[1],
+
               transition: "0.3s",
 
               "&:hover": {
-                boxShadow: `0 0 35px ${muiTheme.palette.primary.main}66`,
+                boxShadow: theme.shadows[4],
               },
             }}
           >
@@ -85,14 +90,14 @@ export default function EventCard({ event, index }) {
               variant="h4"
               fontWeight={700}
               gutterBottom
-              sx={{ color: muiTheme.palette.primary.main }}
+              sx={{ color: theme.palette.primary.main }}
             >
               {event?.title || "Untitled Event"}
             </Typography>
 
             <Typography
               sx={{
-                color: muiTheme.palette.secondary.main,
+                color: theme.palette.text.secondary,
                 mb: 2,
                 fontSize: "0.95rem",
               }}
@@ -103,7 +108,7 @@ export default function EventCard({ event, index }) {
             <Typography
               sx={{
                 lineHeight: 1.7,
-                color: muiTheme.palette.text.primary,
+                color: theme.palette.text.primary,
               }}
             >
               {event?.desc || "Event details coming soon."}

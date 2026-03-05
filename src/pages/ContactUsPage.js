@@ -6,17 +6,17 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 const contacts = [
   {
-    name: "Jatin",
+    name: "Jatin Dalal",
     role: "Common Query",
     phone: "919315431144",
   },
   {
-    name: "Khushi",
+    name: "Khushi Kaptiyal",
     role: "Helpdesk & FAQ'S",
     phone: "918595594917",
   },
   {
-    name: "Aayush",
+    name: "Aayush Yadav",
     role: "Sponsorship",
     phone: "919306101432",
   },

@@ -19,6 +19,7 @@ import {
   Paper,
   TableContainer,
   Toolbar,
+  MenuItem,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -36,6 +37,8 @@ export default function AdminPage() {
 
   const names = ["themes", "events", "rules", "sponsors"];
   const currentName = names[tab];
+
+  const tiers = ["Silver", "Gold", "Platinum", "Co-Title", "Title"];
 
   // ================= LOAD =================
 
@@ -80,7 +83,7 @@ export default function AdminPage() {
       const formData = new FormData();
 
       Object.keys(form).forEach((key) => {
-        if (key !== "img" && key !== "_id") {
+        if (key !== "_id" && key !== "img") {
           formData.append(key, form[key]);
         }
       });
@@ -120,8 +123,7 @@ export default function AdminPage() {
     if (currentName === "rules") {
       setForm({ text: item.text });
     } else {
-      const { img, _id, ...rest } = item;
-      setForm(rest);
+      setForm(item);
     }
 
     setImage(null);
@@ -198,18 +200,43 @@ export default function AdminPage() {
                 </>
               )}
 
+              {/* SPONSOR FIELDS */}
+
               {currentName === "sponsors" && (
-                <Grid item xs={4}>
-                  <TextField
-                    label="Sponsor Name"
-                    fullWidth
-                    value={form.name || ""}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  />
-                </Grid>
+                <>
+                  <Grid item xs={4}>
+                    <TextField
+                      label="Sponsor Name"
+                      fullWidth
+                      value={form.name || ""}
+                      onChange={(e) =>
+                        setForm({ ...form, name: e.target.value })
+                      }
+                    />
+                  </Grid>
+
+                  <Grid item xs={4}>
+                    <TextField
+                      select
+                      label="Tier"
+                      fullWidth
+                      value={form.tier || ""}
+                      onChange={(e) =>
+                        setForm({ ...form, tier: e.target.value })
+                      }
+                    >
+                      {tiers.map((tier) => (
+                        <MenuItem key={tier} value={tier}>
+                          {tier}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Grid>
+                </>
               )}
 
               {/* IMAGE FIELD */}
+
               {currentName !== "rules" && (
                 <Grid item xs={4}>
                   <Button variant="outlined" component="label" fullWidth>
@@ -229,6 +256,8 @@ export default function AdminPage() {
                   )}
                 </Grid>
               )}
+
+              {/* RULES FIELD */}
 
               {currentName === "rules" && (
                 <Grid item xs={6}>
@@ -275,6 +304,20 @@ export default function AdminPage() {
                     {item.date && (
                       <Typography color="gray" sx={{ fontSize: 12 }}>
                         {item.date}
+                      </Typography>
+                    )}
+
+                    {/* SHOW TIER */}
+
+                    {currentName === "sponsors" && item.tier && (
+                      <Typography
+                        sx={{
+                          fontSize: 12,
+                          color: "primary.main",
+                          mt: 0.5,
+                        }}
+                      >
+                        Tier: {item.tier}
                       </Typography>
                     )}
                   </Box>

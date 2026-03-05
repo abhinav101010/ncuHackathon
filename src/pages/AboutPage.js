@@ -15,7 +15,7 @@ export default function AboutPage() {
           color: theme.palette.primary.main,
         }}
       >
-        About NCU Hackathon
+        About INNOVATHON
       </Typography>
 
       {/* Introduction */}
@@ -29,7 +29,7 @@ export default function AboutPage() {
           mx: "auto",
         }}
       >
-        NCU Hackathon is a 48-hour innovation challenge where developers,
+        INNOVATHON is a 56-hour innovation challenge where developers,
         designers, and problem-solvers come together to build creative
         technology solutions. Participants collaborate, experiment, and
         transform ideas into impactful projects that solve real-world problems.
@@ -44,7 +44,7 @@ export default function AboutPage() {
             </Typography>
 
             <Typography variant="body2" color="gray">
-              Turn your ideas into working prototypes within 48 hours and
+              Turn your ideas into working prototypes within 56 hours and
               showcase your creativity.
             </Typography>
           </Box>
@@ -83,11 +83,11 @@ export default function AboutPage() {
           Event Details
         </Typography>
 
-        <Typography color="gray">📅 Duration: 48 Hours</Typography>
+        <Typography color="gray">📅 Duration: 56 Hours</Typography>
 
-        <Typography color="gray">💰 Prize Pool: ₹1L+</Typography>
+        <Typography color="gray">💰 Prize Pool: ₹50k+</Typography>
 
-        <Typography color="gray">👨‍💻 Participants: 500+ Hackers</Typography>
+        <Typography color="gray">👨‍💻 Participants: 500+</Typography>
 
         <Typography color="gray">
           📍 Location: The NorthCap University, Gurugram

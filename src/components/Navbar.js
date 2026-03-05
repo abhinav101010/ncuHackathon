@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import logo from "../utils/logo.png"
 
 export default function Navbar({ themeName, setThemeName }) {
   const theme = useTheme();
@@ -41,7 +42,15 @@ export default function Navbar({ themeName, setThemeName }) {
             letterSpacing: 1,
           }}
         >
-          NCU Hackathon
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <img src={logo} alt="Innovathon Logo" style={{ height: 32 }} />
+          </Box>
         </Typography>
 
         <Box sx={{ flexGrow: 1 }} />
