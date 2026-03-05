@@ -63,17 +63,14 @@ export default function Dashboard() {
       ideaDescription: team.ideaDescription,
     };
 
-    const res = await fetch(
-      `${API}/api/registrations/me`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify(payload),
-      }
-    );
+    const res = await fetch(`${API}/api/registrations/me`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify(payload),
+    });
 
     const data = await res.json();
     setTeam(data);
@@ -89,15 +86,17 @@ export default function Dashboard() {
 
   return (
     <Container maxWidth="md" sx={{ mt: 12 }}>
-      <Paper sx={{ p:5 }}>
-        <Typography variant="h4" gutterBottom>
-          Team Dashboard
+      <Paper sx={{ p: 5 }}>
+        <Typography variant="h4" fontWeight={700} gutterBottom>
+          {team.teamName} Dashboard
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Manage your team details and project submission
         </Typography>
 
         <Divider sx={{ mb: 4 }} />
 
         <Grid container spacing={3}>
-
           {/* TEAM NAME */}
           <Grid item xs={12} sm={6}>
             <TextField
@@ -105,9 +104,7 @@ export default function Dashboard() {
               label="Team Name"
               value={team.teamName || ""}
               disabled={!editing}
-              onChange={(e) =>
-                handleChange("teamName", e.target.value)
-              }
+              onChange={(e) => handleChange("teamName", e.target.value)}
             />
           </Grid>
 
@@ -118,9 +115,7 @@ export default function Dashboard() {
               label="Team Lead"
               value={team.teamLead || ""}
               disabled={!editing}
-              onChange={(e) =>
-                handleChange("teamLead", e.target.value)
-              }
+              onChange={(e) => handleChange("teamLead", e.target.value)}
             />
           </Grid>
 
@@ -131,9 +126,7 @@ export default function Dashboard() {
               label="Phone"
               value={team.phone || ""}
               disabled={!editing}
-              onChange={(e) =>
-                handleChange("phone", e.target.value)
-              }
+              onChange={(e) => handleChange("phone", e.target.value)}
             />
           </Grid>
 
@@ -154,9 +147,7 @@ export default function Dashboard() {
               label="University"
               value={team.university || ""}
               disabled={!editing}
-              onChange={(e) =>
-                handleChange("university", e.target.value)
-              }
+              onChange={(e) => handleChange("university", e.target.value)}
             />
           </Grid>
 
@@ -167,9 +158,7 @@ export default function Dashboard() {
               label="Year & Course"
               value={team.yearCourse || ""}
               disabled={!editing}
-              onChange={(e) =>
-                handleChange("yearCourse", e.target.value)
-              }
+              onChange={(e) => handleChange("yearCourse", e.target.value)}
             />
           </Grid>
 
@@ -180,9 +169,7 @@ export default function Dashboard() {
               label="Team Member 1"
               value={team.member1 || ""}
               disabled={!editing}
-              onChange={(e) =>
-                handleChange("member1", e.target.value)
-              }
+              onChange={(e) => handleChange("member1", e.target.value)}
             />
           </Grid>
 
@@ -193,9 +180,7 @@ export default function Dashboard() {
               label="Team Member 2"
               value={team.member2 || ""}
               disabled={!editing}
-              onChange={(e) =>
-                handleChange("member2", e.target.value)
-              }
+              onChange={(e) => handleChange("member2", e.target.value)}
             />
           </Grid>
 
@@ -206,9 +191,7 @@ export default function Dashboard() {
               <Select
                 value={team.selectedTheme || ""}
                 label="Select Theme"
-                onChange={(e) =>
-                  handleChange("selectedTheme", e.target.value)
-                }
+                onChange={(e) => handleChange("selectedTheme", e.target.value)}
               >
                 {themes.map((theme) => (
                   <MenuItem key={theme._id} value={theme.title}>
@@ -224,25 +207,26 @@ export default function Dashboard() {
             <TextField
               fullWidth
               multiline
-              minRows={4}
-              maxRows={10}
-              label="Idea Description"
+              rows={8}
+              label="Project Idea Description"
+              placeholder="Explain your project idea in detail. Include problem statement, solution, technologies, and impact."
               value={team.ideaDescription || ""}
               disabled={!editing}
-              onChange={(e) =>
-                handleChange("ideaDescription", e.target.value)
-              }
+              onChange={(e) => handleChange("ideaDescription", e.target.value)}
+              helperText="Provide a detailed explanation of your project idea"
+              sx={{
+                "& textarea": {
+                  fontSize: "15px",
+                  lineHeight: 1.6,
+                },
+              }}
             />
           </Grid>
-
         </Grid>
 
         <Box sx={{ mt: 4 }}>
           {!editing ? (
-            <Button
-              variant="contained"
-              onClick={() => setEditing(true)}
-            >
+            <Button variant="contained" onClick={() => setEditing(true)}>
               Edit Details
             </Button>
           ) : (

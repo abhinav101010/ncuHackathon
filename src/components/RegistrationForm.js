@@ -264,6 +264,73 @@ export default function RegistrationForm() {
           </>
         )}
 
+              <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
+                <Button fullWidth variant="outlined" onClick={() => setStep(1)}>
+                  Back
+                </Button>
+
+                <Button fullWidth variant="contained" onClick={handleNextStep2}>
+                  Next
+                </Button>
+              </Box>
+            </>
+          )}
+
+          {/* STEP 3 */}
+          {step === 3 && (
+            <>
+              <Typography sx={{ mb: 3 }}>Select a Theme</Typography>
+
+              <Grid container spacing={3} justifyContent="center">
+                {themes.map((theme, index) => {
+                  const isSelected = formData.selectedTheme === theme.title;
+
+                  return (
+                    <Grid item xs={12} sm={6} md={4} key={index}>
+                      <Card
+                        sx={{
+                          cursor: "pointer",
+                          border: (theme) =>
+                            isSelected
+                              ? `2px solid ${theme.palette.primary.main}`
+                              : `1px solid ${theme.palette.divider}`,
+                          ":hover": {
+                            border: "2px solid #00ffa3",
+                          },
+                        }}
+                        onClick={() => {
+                          setSelectedThemeObj(theme);
+                          setDialogOpen(true);
+                        }}
+                      >
+                        <CardMedia
+                          component="img"
+                          image={`${API}${theme.img}`}
+                          sx={{ height: 160, objectFit: "cover" }}
+                        />
+                        <CardContent>
+                          <Typography>{theme.title}</Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  );
+                })}
+              </Grid>
+
+              <TextField
+                fullWidth
+                multiline
+                rows={4}
+                label="Describe Your Project Idea"
+                margin="normal"
+                value={formData.ideaDescription}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    ideaDescription: e.target.value,
+                  })
+                }
+              />
         {/* STEP 3 */}
         {step === 3 && (
           <>
