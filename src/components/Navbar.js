@@ -70,6 +70,10 @@ export default function Navbar({ themeName, setThemeName }) {
           Home
         </Button>
 
+        <Button component={Link} to="/sponsors" color="inherit">
+          Sponsors
+        </Button>
+
         <Button component={Link} to="/faq" color="inherit">
           FAQ
         </Button>
