@@ -1,55 +1,19 @@
-import { Container, Box, CircularProgress, Typography } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
-import { API } from "../utils/api";
+import sponsors from "../data-static/sponsors";
 
 export default function Sponsors() {
-  const [sponsors, setSponsors] = useState([]);
-  const [loading, setLoading] = useState(true);
-
   const theme = useTheme();
-
-  useEffect(() => {
-    fetch(`${API}/api/sponsors`)
-      .then((res) => res.json())
-      .then((data) => {
-        setSponsors(data);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading)
-    return (
-      <Box sx={{ textAlign: "center", py: 10 }}>
-        <CircularProgress />
-      </Box>
-    );
 
   const sponsorsLoop = [...sponsors, ...sponsors];
 
   return (
     <>
-    {/* <Container sx={{ py: 12 }}> */}
-      {/* Section Title */}
-      {/* <Typography
-        variant="h4"
-        textAlign="center"
-        sx={{
-          mb: 6,
-          fontWeight: "bold",
-          color: theme.palette.primary.main,
-        }}
-      >
-        Sponsors
-      </Typography> */}
-
-      {/* Glass Container */}
       <Box
         sx={{
           position: "relative",
           overflow: "hidden",
-          // borderRadius: 4,
 
           background: theme.palette.background.paper,
 
@@ -68,7 +32,7 @@ export default function Sponsors() {
           transition={{
             repeat: Infinity,
             ease: "linear",
-            duration: 22,
+            duration: 25,
           }}
           style={{
             display: "flex",
@@ -76,9 +40,9 @@ export default function Sponsors() {
             width: "max-content",
           }}
         >
-          {sponsorsLoop.map((sponsor, i) => (
+          {sponsorsLoop.map((sponsor, index) => (
             <Box
-              key={i}
+              key={index}
               sx={{
                 background:
                   theme.palette.mode === "light"
@@ -105,22 +69,19 @@ export default function Sponsors() {
 
                 "&:hover": {
                   transform: "translateY(-6px) scale(1.05)",
-
                   boxShadow: `0 0 25px ${theme.palette.primary.main}60`,
                 },
               }}
             >
               <Box
                 component="img"
-                src={sponsor.img}
-                alt={sponsor.name}
+                src={sponsor?.img}
+                alt={sponsor?.name}
                 sx={{
                   height: 60,
                   objectFit: "contain",
                   filter:
-                    theme.palette.mode === "light"
-                      ? "none"
-                      : "brightness(1.1)",
+                    theme.palette.mode === "light" ? "none" : "brightness(1.1)",
                 }}
               />
             </Box>
@@ -156,7 +117,6 @@ export default function Sponsors() {
           }}
         />
       </Box>
-    {/* </Container> */}
     </>
   );
 }

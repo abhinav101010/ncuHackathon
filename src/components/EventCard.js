@@ -1,7 +1,6 @@
 import { Grid, Box, Paper, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
-import { API } from '../utils/api'
 
 export default function EventCard({ event, index }) {
   const theme = useTheme();
@@ -33,23 +32,15 @@ export default function EventCard({ event, index }) {
             sx={{
               p: 2,
               background: theme.palette.background.paper,
-
               border: `1px solid ${theme.palette.primary.main}`,
-
               borderRadius: 3,
-
               backdropFilter: "blur(8px)",
-
               boxShadow: `0 0 15px ${theme.palette.primary.main}40`,
-
               maxWidth: 380,
               width: "100%",
-
               display: "flex",
               justifyContent: "center",
-
               transition: "0.3s",
-
               "&:hover": {
                 boxShadow: `0 0 35px ${theme.palette.primary.main}66`,
                 transform: "translateY(-4px)",
@@ -58,7 +49,7 @@ export default function EventCard({ event, index }) {
           >
             <Box
               component="img"
-              src={`${API}${event.img}`}
+              src={event.img}
               alt={event.title}
               sx={{
                 width: "100%",
@@ -77,17 +68,11 @@ export default function EventCard({ event, index }) {
             sx={{
               p: 4,
               background: theme.palette.background.paper,
-
               border: `1px solid ${theme.palette.primary.main}`,
-
               borderRadius: 3,
-
               backdropFilter: "blur(8px)",
-
               boxShadow: `0 0 20px ${theme.palette.primary.main}30`,
-
               transition: "0.3s",
-
               "&:hover": {
                 boxShadow: `0 0 35px ${theme.palette.primary.main}66`,
               },

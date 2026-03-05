@@ -7,25 +7,34 @@ export default function Countdown() {
 
   const hackathonDate = new Date("2026-03-26T00:00:00");
 
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+  const calculateTimeLeft = () => {
+    const diff = hackathonDate - new Date();
+
+    if (diff <= 0) {
+      return {
+        days: "00",
+        hours: "00",
+        minutes: "00",
+        seconds: "00",
+      };
+    }
+
+    return {
+      days: String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, "0"),
+      hours: String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(
+        2,
+        "0",
+      ),
+      minutes: String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, "0"),
+      seconds: String(Math.floor((diff / 1000) % 60)).padStart(2, "0"),
+    };
+  };
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const diff = hackathonDate - new Date();
-
-      if (diff <= 0) return;
-
-      setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / (1000 * 60)) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
-      });
+      setTimeLeft(calculateTimeLeft());
     }, 1000);
 
     return () => clearInterval(interval);
@@ -52,11 +61,8 @@ export default function Countdown() {
               py: 2,
               borderRadius: 3,
               textAlign: "center",
-
               background: theme.palette.background.paper,
-
               border: `1px solid ${theme.palette.primary.main}`,
-
               boxShadow: `0 0 20px ${theme.palette.primary.main}55`,
             }}
           >

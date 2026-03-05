@@ -1,23 +1,23 @@
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
-import { API } from "../utils/api.js";
 
 export default function ThemeCard({ theme: themeItem, onClick }) {
   const theme = useTheme();
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.5 }}
       viewport={{ once: true }}
-      whileHover={{ scale: 1.05 }}
+      whileHover={{ scale: 1.04 }}
+      style={{ display: "flex", justifyContent: "center" }}
     >
       <Card
         onClick={() => onClick && onClick(themeItem)}
         sx={{
-          maxWidth: 320,
+          width: 300,
           cursor: "pointer",
 
           background: theme.palette.background.paper,
@@ -28,24 +28,23 @@ export default function ThemeCard({ theme: themeItem, onClick }) {
 
           borderRadius: "16px",
 
-          transition: "0.4s",
-
-          transform: "rotate(-1deg)",
+          transition: "0.35s",
 
           boxShadow: `0 0 15px ${theme.palette.primary.main}33`,
 
           "&:hover": {
             boxShadow: `0 0 35px ${theme.palette.primary.main}66`,
-            transform: "rotate(0deg) translateY(-4px)",
+            transform: "translateY(-6px)",
           },
         }}
       >
         <CardMedia
           component="img"
-          image={`${API}${themeItem.img}`}
+          image={themeItem?.img}
+          alt={themeItem?.title}
           sx={{
             height: 200,
-            objectFit: "cover"
+            objectFit: "cover",
           }}
         />
 
@@ -54,15 +53,18 @@ export default function ThemeCard({ theme: themeItem, onClick }) {
             variant="h6"
             fontWeight="bold"
             sx={{ color: theme.palette.primary.main }}
+            gutterBottom
           >
-            {themeItem.title}
+            {themeItem?.title}
           </Typography>
 
           <Typography
             variant="body2"
             sx={{ color: theme.palette.text.secondary }}
           >
-            {themeItem.desc.substring(0, 60)}...
+            {themeItem?.desc
+              ? `${themeItem.desc.substring(0, 60)}...`
+              : "No description available"}
           </Typography>
         </CardContent>
       </Card>

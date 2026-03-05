@@ -5,8 +5,8 @@ import { darkNeon, lightTheme, studentTheme } from "./theme";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Sponsors from "./components/Sponsors";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
+import ProtectedTeamRoute from "./components/ProtectedTeamRoute";
 import NetworkBackground from "./components/NetworkBackground";
 
 import EventPage from "./pages/EventPage";
@@ -14,14 +14,15 @@ import RulePage from "./pages/RulePage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import ThemePage from "./pages/ThemePage";
-import LoginPage from "./pages/matrix/LoginPage";
-import AdminPage from "./pages/matrix/AdminPage";
-import Dashboard from "./pages/matrix/Dashboard";
 import FAQ from "./pages/FAQ";
 import AboutPage from "./pages/AboutPage";
 import ContactUsPage from "./pages/ContactUsPage";
+import SponsorsPage from "./pages/SponsorsPage";
+
+import LoginPage from "./pages/matrix/LoginPage";
+import AdminPage from "./pages/matrix/AdminPage";
+import Dashboard from "./pages/matrix/Dashboard";
 import TeamLoginPage from "./pages/matrix/TeamLoginPage";
-import ProtectedTeamRoute from "./components/ProtectedTeamRoute";
 
 function App() {
   const location = useLocation();
@@ -63,6 +64,7 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactUsPage />} />
+          <Route path="/sponsors" element={<SponsorsPage />} />
 
           {/* ADMIN LOGIN */}
           <Route path="/admin/login" element={<LoginPage />} />
@@ -77,8 +79,10 @@ function App() {
             }
           />
 
-          {/* TEAM DASHBOARD (you can protect later) */}
+          {/* TEAM LOGIN */}
           <Route path="/login" element={<TeamLoginPage />} />
+
+          {/* TEAM DASHBOARD */}
           <Route
             path="/dashboard"
             element={
@@ -89,7 +93,7 @@ function App() {
           />
         </Routes>
 
-        {/* Hide Sponsors + Footer for admin pages */}
+        {/* Hide Footer for admin pages */}
         {!isAdminRoute && <Footer />}
       </Box>
     </ThemeProvider>

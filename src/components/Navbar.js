@@ -5,7 +5,7 @@ import {
   Button,
   Box,
   Select,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
@@ -19,31 +19,34 @@ export default function Navbar({ themeName, setThemeName }) {
     <AppBar
       position="fixed"
       sx={{
-        background: isLight
-          ? "rgba(255,255,255,0.9)"
-          : "rgba(0,0,0,0.6)",
+        background: isLight ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.6)",
 
         color: theme.palette.text.primary,
 
         backdropFilter: "blur(10px)",
 
-        // borderBottom: `1px solid ${theme.palette.primary.main}40`,
+        borderBottom: `1px solid ${theme.palette.primary.main}30`,
       }}
     >
       <Toolbar>
+        {/* Logo */}
         <Typography
+          component={Link}
+          to="/"
           variant="h6"
           sx={{
             fontWeight: "bold",
-            // color: theme.palette.primary.main,
+            textDecoration: "none",
+            color: theme.palette.primary.main,
+            letterSpacing: 1,
           }}
         >
-          HACKATHON
+          NCU Hackathon
         </Typography>
 
         <Box sx={{ flexGrow: 1 }} />
 
-        {/* THEME SELECTOR */}
+        {/* Theme Selector */}
         <Select
           size="small"
           value={themeName}
@@ -51,9 +54,7 @@ export default function Navbar({ themeName, setThemeName }) {
           sx={{
             mr: 3,
             color: theme.palette.text.primary,
-
             border: `1px solid ${theme.palette.primary.main}40`,
-
             ".MuiOutlinedInput-notchedOutline": {
               border: "none",
             },
@@ -64,32 +65,30 @@ export default function Navbar({ themeName, setThemeName }) {
           <MenuItem value="student">Student</MenuItem>
         </Select>
 
+        {/* Navigation Links */}
         <Button component={Link} to="/" color="inherit">
           Home
         </Button>
 
-        <Button component={Link} to="/dashboard" color="inherit">
-          Dashboard
-        </Button>
-
         <Button component={Link} to="/faq" color="inherit">
-          FAQ's
+          FAQ
         </Button>
 
         <Button component={Link} to="/about" color="inherit">
-          About Us
+          About
         </Button>
 
         <Button component={Link} to="/contact" color="inherit">
-          Contact Us
+          Contact
         </Button>
 
+        {/* Register Button */}
         <Button
           component={Link}
           to="/register"
           variant="contained"
           color="secondary"
-          sx={{ ml: 2 }}
+          sx={{ ml: 2, fontWeight: "bold" }}
         >
           Register
         </Button>

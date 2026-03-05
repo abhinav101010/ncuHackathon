@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Grid,
@@ -9,38 +9,22 @@ import {
   Button,
   Typography,
   Box,
-  CircularProgress,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import SectionHeading from "../components/SectionHeading";
+import themes from "../data-static/themes";
 import ThemeCard from "../components/ThemeCard";
 import Sponsors from "../components/Sponsors";
 import { useLocation } from "react-router-dom";
-import { API } from "../utils/api";
 
 export default function ThemePage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState(null);
-  const [themes, setThemes] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const theme = useTheme();
 
   const location = useLocation();
   const isThemes = location.pathname.startsWith("/themes");
-
-  useEffect(() => {
-    fetch(`${API}/api/themes`)
-      .then((res) => res.json())
-      .then((data) => {
-        setThemes(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, []);
 
   const handleOpen = (themeItem) => {
     setSelectedTheme(themeItem);
@@ -52,29 +36,23 @@ export default function ThemePage() {
       <Container sx={{ py: 12 }}>
         <SectionHeading>Themes</SectionHeading>
 
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <Grid
-            container
-            spacing={4}
-            justifyContent="center"
-            alignItems="center"
-          >
-            {themes.map((themeItem) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                key={themeItem._id}
-                sx={{ display: "flex", justifyContent: "center" }}
-              >
-                <ThemeCard theme={themeItem} onClick={handleOpen} />
-              </Grid>
-            ))}
-          </Grid>
-        )}
+        <Grid container spacing={4} justifyContent="center" alignItems="center">
+          {themes.map((themeItem, i) => (
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              key={i}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <ThemeCard theme={themeItem} onClick={handleOpen} />
+            </Grid>
+          ))}
+        </Grid>
       </Container>
 
       {/* THEME DIALOG */}
@@ -86,11 +64,8 @@ export default function ThemePage() {
         PaperProps={{
           sx: {
             backgroundColor: theme.palette.background.paper,
-
             border: `1px solid ${theme.palette.primary.main}`,
-
             borderRadius: 3,
-
             boxShadow: `0 0 25px ${theme.palette.primary.main}40`,
           },
         }}

@@ -26,8 +26,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { API } from "../../utils/api";
 
-// const API = "http://localhost:5000/api";
-
 export default function AdminPage() {
   const [tab, setTab] = useState(0);
   const [data, setData] = useState([]);
@@ -81,14 +79,12 @@ export default function AdminPage() {
     } else {
       const formData = new FormData();
 
-      // append form fields except img
       Object.keys(form).forEach((key) => {
         if (key !== "img" && key !== "_id") {
           formData.append(key, form[key]);
         }
       });
 
-      // append image if selected
       if (image) {
         formData.append("img", image);
       }
@@ -119,7 +115,7 @@ export default function AdminPage() {
   // ================= EDIT =================
 
   const handleEdit = (item) => {
-  setEditingId(item._id);
+    setEditingId(item._id);
 
     if (currentName === "rules") {
       setForm({ text: item.text });
@@ -163,7 +159,6 @@ export default function AdminPage() {
         <>
           <Box mt={3}>
             <Grid container spacing={2}>
-              {/* THEMES & EVENTS */}
               {(currentName === "themes" || currentName === "events") && (
                 <>
                   <Grid item xs={4}>
@@ -188,7 +183,6 @@ export default function AdminPage() {
                     />
                   </Grid>
 
-                  {/* EVENT DATE */}
                   {currentName === "events" && (
                     <Grid item xs={4}>
                       <TextField
@@ -204,7 +198,6 @@ export default function AdminPage() {
                 </>
               )}
 
-              {/* SPONSORS */}
               {currentName === "sponsors" && (
                 <Grid item xs={4}>
                   <TextField
@@ -237,7 +230,6 @@ export default function AdminPage() {
                 </Grid>
               )}
 
-              {/* RULES */}
               {currentName === "rules" && (
                 <Grid item xs={6}>
                   <TextField
@@ -261,13 +253,7 @@ export default function AdminPage() {
 
           <Box mt={4}>
             {data.map((item) => (
-              <Card
-                key={item._id}
-                sx={{
-                  mb: 2,
-                  background: "rgba(255,255,255,0.05)",
-                }}
-              >
+              <Card key={item._id} sx={{ mb: 2 }}>
                 <CardContent
                   sx={{
                     display: "flex",

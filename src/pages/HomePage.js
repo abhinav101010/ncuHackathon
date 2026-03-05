@@ -1,4 +1,4 @@
-import { Container, Typography, Box } from "@mui/material";
+import { Container, Typography, Box, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Countdown from "../components/Countdown";
@@ -6,6 +6,7 @@ import ThemePage from "./ThemePage";
 import Sponsors from "../components/Sponsors";
 import EventPage from "./EventPage";
 import RulePage from "./RulePage";
+import { useNavigate } from "react-router-dom";
 
 const words = [
   "THE FUTURE",
@@ -17,6 +18,8 @@ const words = [
 ];
 
 export default function HomePage() {
+  const navigate = useNavigate();
+
   const [wordIndex, setWordIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -52,6 +55,7 @@ export default function HomePage() {
         maxWidth="lg"
         sx={{
           minHeight: "100vh",
+          pt: 12,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -59,6 +63,19 @@ export default function HomePage() {
           textAlign: "center",
         }}
       >
+        {/* Hackathon Title */}
+        <Typography
+          variant="h4"
+          sx={{
+            mb: 2,
+            letterSpacing: 4,
+            fontWeight: "bold",
+            color: "#00ffa3",
+          }}
+        >
+          NCU HACKATHON 2026
+        </Typography>
+
         {/* Main Heading */}
         <Typography
           variant="h2"
@@ -90,6 +107,18 @@ export default function HomePage() {
           />
         </Typography>
 
+        {/* Hackathon Info */}
+        <Typography
+          variant="body1"
+          sx={{
+            color: "#00ffa3",
+            mb: 2,
+            fontWeight: "bold",
+          }}
+        >
+          48 Hour Hackathon • ₹1L+ Prize Pool • 500+ Hackers
+        </Typography>
+
         {/* Subtitle */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -101,6 +130,35 @@ export default function HomePage() {
             breakthrough solutions in just 48 hours. Code. Collaborate. Conquer.
           </Typography>
         </motion.div>
+
+        {/* CTA Buttons */}
+        <Box sx={{ mb: 5 }}>
+          <Button
+            variant="contained"
+            onClick={() => navigate("/register")}
+            sx={{
+              mr: 2,
+              background: "#ff0080",
+              fontWeight: "bold",
+              padding: "10px 28px",
+            }}
+          >
+            Register Now
+          </Button>
+
+          <Button
+            variant="outlined"
+            onClick={() => navigate("/themes")}
+            sx={{
+              borderColor: "#00ffa3",
+              color: "#00ffa3",
+              fontWeight: "bold",
+              padding: "10px 28px",
+            }}
+          >
+            Explore Themes
+          </Button>
+        </Box>
 
         {/* Countdown */}
         <Countdown />
@@ -121,11 +179,11 @@ export default function HomePage() {
         </style>
       </Container>
 
+      {/* Other Sections */}
       <Sponsors />
       <ThemePage />
       <EventPage />
       <RulePage />
-      <Sponsors />
     </>
   );
 }

@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Container,
-  Typography,
-  Grid,
-  Box,
-  Button,
-  Paper,
-} from "@mui/material";
+import { Container, Typography, Grid, Box, Button, Paper } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { motion } from "framer-motion";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
@@ -38,7 +31,7 @@ export default function ContactUsPage() {
   const theme = useTheme();
 
   const message = encodeURIComponent(
-    "Hello! I would like to know more about the Hackathon."
+    "Hello! I would like to know more about the Hackathon.",
   );
 
   return (
@@ -102,11 +95,8 @@ export default function ContactUsPage() {
                   {person.role}
                 </Typography>
 
-                <Typography sx={{ mb: 3 }}>
-                  +{person.phone}
-                </Typography>
+                <Typography sx={{ mb: 3 }}>+{person.phone}</Typography>
 
-                {/* WhatsApp Button */}
                 <Button
                   variant="contained"
                   startIcon={<WhatsAppIcon />}

@@ -17,16 +17,20 @@ export default function NetworkBackground() {
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+
+      // regenerate particles on resize
+      particles = [];
+      for (let i = 0; i < num; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 1,
+          vy: (Math.random() - 0.5) * 1,
+        });
+      }
     };
 
     resize();
-
-    particles = Array.from({ length: num }).map(() => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 1,
-      vy: (Math.random() - 0.5) * 1,
-    }));
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -45,7 +49,8 @@ export default function NetworkBackground() {
         ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
         ctx.fill();
 
-        for (let j = i + 1; j < num; j++) {
+        // connecting lines
+        for (let j = i + 1; j < particles.length; j++) {
           const dx = p.x - particles[j].x;
           const dy = p.y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
@@ -56,6 +61,7 @@ export default function NetworkBackground() {
             ctx.lineTo(particles[j].x, particles[j].y);
 
             const opacity = 1 - dist / 120;
+
             ctx.strokeStyle =
               theme.palette.mode === "light"
                 ? `rgba(0,0,0,${opacity * 0.25})`
@@ -76,7 +82,7 @@ export default function NetworkBackground() {
     return () => {
       window.removeEventListener("resize", resize);
     };
-  }, [theme]); // ✅ re-run when theme changes
+  }, [theme]); // re-run when theme changes
 
   return (
     <canvas
