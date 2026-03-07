@@ -1,4 +1,4 @@
-import { Container, Typography, Box, Button } from "@mui/material";
+import { Container, Typography, Box, Button, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Countdown from "../components/Countdown";
@@ -7,6 +7,7 @@ import Sponsors from "../components/Sponsors";
 import EventPage from "./EventPage";
 import RulePage from "./RulePage";
 import { useNavigate } from "react-router-dom";
+import { calculateTimeLeft } from "../utils/common";
 
 const words = [
   "THE FUTURE",
@@ -19,10 +20,10 @@ const words = [
 
 export default function HomePage() {
   const navigate = useNavigate();
-
   const [wordIndex, setWordIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const theme = useTheme();
 
   useEffect(() => {
     const currentWord = words[wordIndex];
@@ -70,10 +71,10 @@ export default function HomePage() {
             mb: 2,
             letterSpacing: 4,
             fontWeight: "bold",
-            color: "#00ffa3",
+            color: theme.palette.primary.main,
           }}
         >
-          NCU HACKATHON 2026
+          INNOVATHON 2026
         </Typography>
 
         {/* Main Heading */}
@@ -111,12 +112,12 @@ export default function HomePage() {
         <Typography
           variant="body1"
           sx={{
-            color: "#00ffa3",
+            color: theme.palette.primary.main,
             mb: 2,
             fontWeight: "bold",
           }}
         >
-          48 Hour Hackathon • ₹1L+ Prize Pool • 500+ Hackers
+          56 Hour Hackathon • ₹50k+ Prize Pool • 500+ Participants
         </Typography>
 
         {/* Subtitle */}
@@ -127,7 +128,7 @@ export default function HomePage() {
         >
           <Typography variant="h6" sx={{ color: "gray", maxWidth: 600, mb: 4 }}>
             Join visionary developers, designers, and innovators to create
-            breakthrough solutions in just 48 hours. Code. Collaborate. Conquer.
+            breakthrough solutions in just 56 hours. Code. Collaborate. Conquer.
           </Typography>
         </motion.div>
 
@@ -135,6 +136,7 @@ export default function HomePage() {
         <Box sx={{ mb: 5 }}>
           <Button
             variant="contained"
+            disabled={calculateTimeLeft().expired}
             onClick={() => navigate("/register")}
             sx={{
               mr: 2,
@@ -150,8 +152,8 @@ export default function HomePage() {
             variant="outlined"
             onClick={() => navigate("/themes")}
             sx={{
-              borderColor: "#00ffa3",
-              color: "#00ffa3",
+              borderColor: theme.palette.primary.main,
+              color: theme.palette.primary.main,
               fontWeight: "bold",
               padding: "10px 28px",
             }}

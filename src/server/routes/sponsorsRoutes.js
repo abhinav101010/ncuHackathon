@@ -5,10 +5,24 @@ const upload = require("../middleware/upload");
 
 
 // ================= GET ALL =================
+// ================= GET ALL =================
 router.get("/", async (req, res) => {
   try {
-    const sponsors = await Sponsor.find().sort({ createdAt: -1 });
+
+    const tierOrder = {
+      Silver: 1,
+      Gold: 2,
+      Platinum: 3,
+      "Co-Title": 4,
+      Title: 5,
+    };
+
+    const sponsors = await Sponsor.find();
+
+    sponsors.sort((a, b) => tierOrder[a.tier] - tierOrder[b.tier]);
+
     res.json(sponsors);
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -25,6 +39,7 @@ router.post("/", upload.single("img"), async (req, res) => {
 
     const sponsor = new Sponsor({
       name: req.body.name,
+      tier: req.body.tier,
       img: `/uploads/sponsors/${req.file.filename}`,
     });
 
@@ -44,6 +59,7 @@ router.put("/:id", upload.single("img"), async (req, res) => {
 
     const updateData = {
       name: req.body.name,
+      tier: req.body.tier,
     };
 
     if (req.file) {

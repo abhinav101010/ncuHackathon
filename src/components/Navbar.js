@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import logo from "../utils/logo.svg"
+import { calculateTimeLeft } from "../utils/common";
 
 export default function Navbar({ themeName, setThemeName }) {
   const theme = useTheme();
@@ -41,7 +43,15 @@ export default function Navbar({ themeName, setThemeName }) {
             letterSpacing: 1,
           }}
         >
-          NCU Hackathon
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <img src={logo} alt="Innovathon Logo" style={{ height: 32 }} />
+          </Box>
         </Typography>
 
         <Box sx={{ flexGrow: 1 }} />
@@ -60,14 +70,18 @@ export default function Navbar({ themeName, setThemeName }) {
             },
           }}
         >
-          <MenuItem value="dark">Dark Neon</MenuItem>
           <MenuItem value="light">Light</MenuItem>
+          <MenuItem value="dark">Dark Neon</MenuItem>
           <MenuItem value="student">Student</MenuItem>
         </Select>
 
         {/* Navigation Links */}
         <Button component={Link} to="/" color="inherit">
           Home
+        </Button>
+
+        <Button component={Link} to="/sponsors" color="inherit">
+          Sponsors
         </Button>
 
         <Button component={Link} to="/faq" color="inherit">
@@ -84,6 +98,7 @@ export default function Navbar({ themeName, setThemeName }) {
 
         {/* Register Button */}
         <Button
+          disabled={calculateTimeLeft().expired}
           component={Link}
           to="/register"
           variant="contained"

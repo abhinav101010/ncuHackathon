@@ -49,14 +49,28 @@ router.post("/", upload.single("img"), async (req, res) => {
 });
 
 // UPDATE
-router.put("/:id", async (req, res) => {
+router.put("/:id", upload.single("img"), async (req, res) => {
   try {
+
+    const updateData = {
+      title: req.body.title,
+      desc: req.body.desc,
+      date: req.body.date,
+    };
+
+    // if new image uploaded
+    if (req.file) {
+      updateData.img = `/uploads/events/${req.file.filename}`;
+    }
+
     const updated = await Event.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       { new: true }
     );
+
     res.json(updated);
+
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

@@ -4,6 +4,7 @@ const router = express.Router();
 const Registration = require("../models/Registration");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { calculateTimeLeft } = require("../../utils/common");
 // const teamCode = "TEAM-" + Math.random().toString(36).substring(2, 8).toUpperCase();
 
 //
@@ -102,18 +103,26 @@ router.get("/:id", async (req, res) => {
 // 🔹 CREATE
 //
 router.post("/", async (req, res) => {
+  if (calculateTimeLeft().expired) {
+    return res.status(403).json({
+      error: "Registrations are closed",
+    });
+  }
   try {
     const {
       teamName,
       teamLead,
       teamLeadEmail,
+      teamLeadTshirt,
       phone,
       email,
       password,
       university,
       yearCourse,
       member1,
+      member1Tshirt,
       member2,
+      member2Tshirt,
       selectedTheme,
       ideaDescription,
     } = req.body;
@@ -144,16 +153,34 @@ router.post("/", async (req, res) => {
       teamName,
       teamLead,
       teamLeadEmail,
+      teamLeadTshirt,
       phone,
       email,
-      password: hashedPassword, // important
+      password: hashedPassword,
       university,
       yearCourse,
       member1,
+      member1Tshirt,
       member2,
+      member2Tshirt,
       selectedTheme,
       ideaDescription,
     });
+
+    if (
+      !teamName ||
+      !teamLead ||
+      !teamLeadEmail ||
+      !email ||
+      !password ||
+      !teamLeadTshirt ||
+      !member1Tshirt ||
+      !member2Tshirt
+    ) {
+      return res.status(400).json({
+        error: "Required fields missing",
+      });
+    }
 
     await registration.save();
 

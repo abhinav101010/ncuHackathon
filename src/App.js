@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { darkNeon, lightTheme, studentTheme } from "./theme";
 
+import ScrollToTop from "./utils/ScrollToTop";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
@@ -29,7 +30,7 @@ function App() {
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   const [themeName, setThemeName] = useState(
-    localStorage.getItem("theme") || "dark",
+    localStorage.getItem("theme") || "light",
   );
 
   const themes = {
@@ -53,7 +54,7 @@ function App() {
 
       <Box sx={{ position: "relative", zIndex: 1 }}>
         <Navbar themeName={themeName} setThemeName={setThemeName} />
-
+        <ScrollToTop/>
         <Routes>
           {/* PUBLIC ROUTES */}
           <Route path="/" element={<HomePage />} />
