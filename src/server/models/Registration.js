@@ -23,6 +23,12 @@ const registrationSchema = new mongoose.Schema(
     required: true
   },
 
+  teamLeadTshirt: {
+    type: String,
+    enum: ["XS", "S", "M", "L", "XL", "XXL"],
+    required: true
+  },
+
   email: {
     type: String,
     required: true
@@ -43,8 +49,27 @@ const registrationSchema = new mongoose.Schema(
     required: true
   },
 
-  member1: String,
-  member2: String,
+  member1: {
+    type: String,
+    required: true
+  },
+
+  member1Tshirt: {
+    type: String,
+    enum: ["XS", "S", "M", "L", "XL", "XXL"],
+    required: true
+  },
+
+  member2: {
+    type: String,
+    required: true
+  },
+
+  member2Tshirt: {
+    type: String,
+    enum: ["XS", "S", "M", "L", "XL", "XXL"],
+    required: true
+  },
 
   selectedTheme: {
     type: String,
@@ -60,6 +85,7 @@ const registrationSchema = new mongoose.Schema(
     type: String,
     required: true
   }
+
 },
 { timestamps: true }
 );

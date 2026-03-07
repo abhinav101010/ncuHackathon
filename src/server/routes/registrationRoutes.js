@@ -107,13 +107,16 @@ router.post("/", async (req, res) => {
       teamName,
       teamLead,
       teamLeadEmail,
+      teamLeadTshirt,
       phone,
       email,
       password,
       university,
       yearCourse,
       member1,
+      member1Tshirt,
       member2,
+      member2Tshirt,
       selectedTheme,
       ideaDescription,
     } = req.body;
@@ -144,16 +147,34 @@ router.post("/", async (req, res) => {
       teamName,
       teamLead,
       teamLeadEmail,
+      teamLeadTshirt,
       phone,
       email,
-      password: hashedPassword, // important
+      password: hashedPassword,
       university,
       yearCourse,
       member1,
+      member1Tshirt,
       member2,
+      member2Tshirt,
       selectedTheme,
       ideaDescription,
     });
+
+    if (
+      !teamName ||
+      !teamLead ||
+      !teamLeadEmail ||
+      !email ||
+      !password ||
+      !teamLeadTshirt ||
+      !member1Tshirt ||
+      !member2Tshirt
+    ) {
+      return res.status(400).json({
+        error: "Required fields missing",
+      });
+    }
 
     await registration.save();
 

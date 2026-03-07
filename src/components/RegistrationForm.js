@@ -16,6 +16,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
+import { MenuItem } from "@mui/material";
 import { API } from "../utils/api";
 
 export default function RegistrationForm() {
@@ -26,15 +27,20 @@ export default function RegistrationForm() {
   const [themes, setThemes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
+  const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
+
   const [formData, setFormData] = useState({
     teamName: "",
     teamLead: "",
     teamLeadEmail: "",
+    teamLeadTshirt: "",
     phone: "",
     university: "",
     yearCourse: "",
     member1: "",
+    member1Tshirt: "",
     member2: "",
+    member2Tshirt: "",
     email: "",
     password: "",
     selectedTheme: "",
@@ -43,7 +49,13 @@ export default function RegistrationForm() {
 
   const containerWidth = step === 3 ? "md" : "sm";
 
-  /* ---------------- LOAD THEMES ---------------- */
+  const inputStyle = {
+    "& .MuiOutlinedInput-root": {
+      borderRadius: 2,
+    },
+  };
+
+  /* LOAD THEMES */
 
   useEffect(() => {
     fetch(`${API}/api/themes`)
@@ -58,23 +70,18 @@ export default function RegistrationForm() {
       });
   }, []);
 
-  const validateEmail = (email) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
+  /* VALIDATIONS */
 
-  const validatePhone = (phone) => {
-    return /^[6-9]\d{9}$/.test(phone);
-  };
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const validateName = (name) => {
-    return /^[a-zA-Z\s]{2,40}$/.test(name);
-  };
+  const validatePhone = (phone) => /^[6-9]\d{9}$/.test(phone);
 
-  const validatePassword = (password) => {
-    return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(password);
-  };
+  const validateName = (name) => /^[a-zA-Z\s]{2,40}$/.test(name);
 
-  /* ---------------- STEP 1 ---------------- */
+  const validatePassword = (password) =>
+    /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(password);
+
+  /* STEP 1 */
 
   const handleNextStep1 = () => {
     const newErrors = {};
@@ -91,14 +98,15 @@ export default function RegistrationForm() {
     if (!validatePhone(formData.phone))
       newErrors.phone = "Enter valid 10 digit phone";
 
+    if (!formData.teamLeadTshirt) newErrors.teamLeadTshirt = "Select Size"
+
     if (!formData.university) newErrors.university = "University required";
 
-    if (formData.university.length < 3) newErrors.university = "No Short Forms";
+    if (formData.university.length < 3) newErrors.university = "University full name required";
 
     if (!formData.yearCourse) newErrors.yearCourse = "Year/Course required";
 
     setErrors(newErrors);
-    console.log(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
       setStep(2);
@@ -107,7 +115,7 @@ export default function RegistrationForm() {
     }
   };
 
-  /* ---------------- STEP 2 ---------------- */
+  /* STEP 2 */
 
   const handleNextStep2 = () => {
     const newErrors = {};
@@ -116,19 +124,17 @@ export default function RegistrationForm() {
 
     if (!validateName(formData.member2)) newErrors.member2 = "Enter valid name";
 
-    // if (!validateEmail(formData.email)) newErrors.email = "Invalid email";
+    if(formData.member1Tshirt) newErrors.member1Tshirt = "Select Size";
+
+    if(formData.member2Tshirt) newErrors.member2Tshirt = "Select Size";
 
     if (formData.member1 === formData.member2)
       newErrors.member2 = "Members must be different";
-
-    if (!formData.password || formData.password.length < 6)
-      newErrors.password = "Password must be at least 6 characters";
 
     if (!validatePassword(formData.password))
       newErrors.password = "Password must contain letters and numbers";
 
     setErrors(newErrors);
-    console.log(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
       setStep(3);
@@ -137,7 +143,7 @@ export default function RegistrationForm() {
     }
   };
 
-  /* ---------------- SUBMIT ---------------- */
+  /* SUBMIT */
 
   const handleSubmit = async () => {
     if (!formData.selectedTheme) {
@@ -146,11 +152,11 @@ export default function RegistrationForm() {
     }
 
     if (!formData.ideaDescription) {
-      toast.error("Please describe your idea");
+      toast.error("Describe your idea");
       return;
     }
 
-    setSubmitting(true); // start loader
+    setSubmitting(true);
 
     try {
       const response = await fetch(`${API}/api/registrations`, {
@@ -164,9 +170,7 @@ export default function RegistrationForm() {
       let data = {};
       try {
         data = await response.json();
-      } catch {
-        console.error("Invalid JSON from server");
-      }
+      } catch {}
 
       if (response.ok) {
         toast.success("Registration successful 🚀");
@@ -192,12 +196,11 @@ export default function RegistrationForm() {
       } else {
         toast.error(data.error || "Registration failed");
       }
-    } catch (error) {
-      console.error("Registration error:", error);
+    } catch {
       toast.error("Server error");
     }
 
-    setSubmitting(false); // stop loader
+    setSubmitting(false);
   };
 
   const updateField = (field, value) => {
@@ -236,102 +239,169 @@ export default function RegistrationForm() {
             Hackathon Registration
           </Typography>
 
+          {/* STEP INDICATOR */}
+
+          {/* STEP INDICATOR */}
+
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              mb: 4,
+            }}
+          >
+            {[1, 2, 3].map((s, index) => (
+              <Box key={s} sx={{ display: "flex", alignItems: "center" }}>
+                {/* CIRCLE */}
+
+                <Box
+                  sx={{
+                    width: 34,
+                    height: 34,
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontWeight: 600,
+                    border: (theme) =>
+                      `2px solid ${theme.palette.primary.main}`,
+                    background: (theme) =>
+                      step >= s ? theme.palette.primary.main : "transparent",
+                    color: (theme) =>
+                      step >= s
+                        ? theme.palette.primary.contrastText
+                        : theme.palette.text.secondary,
+                    transition: "0.3s",
+                  }}
+                >
+                  {s}
+                </Box>
+
+                {/* LINE */}
+
+                {index < 2 && (
+                  <Box
+                    sx={{
+                      width: 60,
+                      height: 2,
+                      mx: 1,
+                      background: (theme) =>
+                        step > index + 1
+                          ? theme.palette.primary.main
+                          : theme.palette.divider,
+                      transition: "0.3s",
+                    }}
+                  />
+                )}
+              </Box>
+            ))}
+          </Box>
+
           {/* STEP 1 */}
+
           {step === 1 && (
             <>
               <TextField
                 fullWidth
-                label="Name of Team"
-                required
+                label="Team Name"
                 margin="normal"
+                sx={inputStyle}
                 value={formData.teamName}
                 error={!!errors.teamName}
                 helperText={errors.teamName}
-                onChange={(e) => {
-                  setFormData({ ...formData, teamName: e.target.value });
-                  updateField("teamName", e.target.value);
-                }}
+                onChange={(e) => updateField("teamName", e.target.value)}
               />
 
-              <TextField
-                fullWidth
-                label="Team Lead Name"
-                required
-                margin="normal"
-                value={formData.teamLead}
-                error={!!errors.teamLead}
-                helperText={errors.teamLead}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    teamLead: e.target.value.replace(/[^a-zA-Z\s]/g, ""),
-                  })
-                }
-              />
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={8}>
+                  <TextField
+                    fullWidth
+                    label="Team Lead Name"
+                    margin="normal"
+                    sx={inputStyle}
+                    value={formData.teamLead}
+                    error={!!errors.teamLead}
+                    helperText={errors.teamLead}
+                    onChange={(e) =>
+                      updateField(
+                        "teamLead",
+                        e.target.value.replace(/[^a-zA-Z\s]/g, ""),
+                      )
+                    }
+                  />
+                </Grid>
+
+                <Grid item xs={4}>
+                  <TextField
+                    select
+                    fullWidth
+                    required
+                    label="T-Shirt Size"
+                    margin="normal"
+                    value={formData.teamLeadTshirt}
+                    error={!!errors.teamLeadTshirt}
+                    helperText={errors.teamLeadTshirt}
+                    sx={{
+                      minWidth: 150,
+                    }}
+                    onChange={(e) =>
+                      updateField("teamLeadTshirt", e.target.value)
+                    }
+                  >
+                    {sizes.map((size) => (
+                      <MenuItem key={size} value={size}>
+                        {size}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Grid>
 
               <TextField
                 fullWidth
                 label="Team Lead Email"
-                required
                 margin="normal"
+                sx={inputStyle}
                 value={formData.teamLeadEmail}
                 error={!!errors.teamLeadEmail}
                 helperText={errors.teamLeadEmail}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    teamLeadEmail: e.target.value,
-                  })
-                }
+                onChange={(e) => updateField("teamLeadEmail", e.target.value)}
               />
 
               <TextField
                 fullWidth
-                label="Phone Number"
+                label="Phone"
                 margin="normal"
-                required
-                inputProps={{ inputMode: "numeric", maxLength: 10 }}
+                sx={inputStyle}
                 value={formData.phone}
                 error={!!errors.phone}
                 helperText={errors.phone}
                 onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    phone: e.target.value.replace(/\D/g, ""),
-                  })
+                  updateField("phone", e.target.value.replace(/\D/g, ""))
                 }
               />
 
               <TextField
                 fullWidth
-                label="University (Full Form)"
-                required
+                label="University (Full Forms)"
                 margin="normal"
+                sx={inputStyle}
                 value={formData.university}
                 error={!!errors.university}
                 helperText={errors.university}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    university: e.target.value,
-                  })
-                }
+                onChange={(e) => updateField("university", e.target.value)}
               />
 
               <TextField
                 fullWidth
                 label="Year & Course"
-                required
                 margin="normal"
+                sx={inputStyle}
                 value={formData.yearCourse}
                 error={!!errors.yearCourse}
                 helperText={errors.yearCourse}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    yearCourse: e.target.value,
-                  })
-                }
+                onChange={(e) => updateField("yearCourse", e.target.value)}
               />
 
               <Button
@@ -346,70 +416,118 @@ export default function RegistrationForm() {
           )}
 
           {/* STEP 2 */}
+
           {step === 2 && (
             <>
               <Typography sx={{ mb: 2 }}>
                 Team Size: <strong>3 Members</strong>
               </Typography>
 
-              <TextField
-                fullWidth
-                label="Team Mate 1 Name"
-                required
-                margin="normal"
-                value={formData.member1}
-                error={!!errors.member1}
-                helperText={errors.member1}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    member1: e.target.value.replace(/[^a-zA-Z\s]/g, ""),
-                  })
-                }
-              />
+              <Grid container spacing={2}>
+                <Grid item xs={8}>
+                  <TextField
+                    fullWidth
+                    label="Team Mate 1"
+                    margin="normal"
+                    sx={inputStyle}
+                    value={formData.member1}
+                    error={!!errors.member1}
+                    helperText={errors.member1}
+                    onChange={(e) =>
+                      updateField(
+                        "member1",
+                        e.target.value.replace(/[^a-zA-Z\s]/g, ""),
+                      )
+                    }
+                  />
+                </Grid>
+
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    select
+                    required
+                    label="T-Shirt Size"
+                    margin="normal"
+                    sx={{...inputStyle, minWidth: 150,}}
+                    value={formData.member1Tshirt}
+                    error={!!errors.member1Tshirt}
+                    helperText={errors.member1Tshirt}
+                    onChange={(e) =>
+                      updateField("member1Tshirt", e.target.value)
+                    }
+                  >
+                    {sizes.map((size) => (
+                      <MenuItem key={size} value={size}>
+                        {size}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={2}>
+                <Grid item xs={8}>
+                  <TextField
+                    fullWidth
+                    label="Team Mate 2"
+                    margin="normal"
+                    sx={inputStyle}
+                    value={formData.member2}
+                    error={!!errors.member2}
+                    helperText={errors.member2}
+                    onChange={(e) =>
+                      updateField(
+                        "member2",
+                        e.target.value.replace(/[^a-zA-Z\s]/g, ""),
+                      )
+                    }
+                  />
+                </Grid>
+
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    select
+                    required
+                    label="T-Shirt Size"
+                    margin="normal"
+                    sx={{...inputStyle, minWidth: 150,}}
+                    value={formData.member2Tshirt}
+                    error={!!errors.member2Tshirt}
+                    helperText={errors.member2Tshirt}
+                    onChange={(e) =>
+                      updateField("member2Tshirt", e.target.value)
+                    }
+                  >
+                    {sizes.map((size) => (
+                      <MenuItem key={size} value={size}>
+                        {size}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Grid>
 
               <TextField
                 fullWidth
-                label="Team Mate 2 Name"
-                required
+                label="Login Email"
                 margin="normal"
-                value={formData.member2}
-                error={!!errors.member2}
-                helperText={errors.member2}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    member2: e.target.value.replace(/[^a-zA-Z\s]/g, ""),
-                  })
-                }
-              />
-
-              <TextField
-                fullWidth
-                label="Team Login Username"
-                margin="normal"
-                required
-                type="email"
+                sx={inputStyle}
                 value={formData.email}
-                error={!!errors.email}
-                helperText={errors.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
+                onChange={(e) => updateField("email", e.target.value)}
               />
 
               <TextField
                 fullWidth
                 label="Password"
-                margin="normal"
-                required
                 type="password"
+                margin="normal"
+                sx={inputStyle}
                 value={formData.password}
                 error={!!errors.password}
                 helperText={errors.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
+                onChange={(e) => updateField("password", e.target.value)}
               />
 
               <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
@@ -425,11 +543,12 @@ export default function RegistrationForm() {
           )}
 
           {/* STEP 3 */}
+
           {step === 3 && (
             <>
               <Typography sx={{ mb: 3 }}>Select a Theme</Typography>
 
-              <Grid container spacing={3} justifyContent="center">
+              <Grid container spacing={3}>
                 {themes.map((theme) => {
                   const isSelected = formData.selectedTheme === theme.title;
 
@@ -438,12 +557,13 @@ export default function RegistrationForm() {
                       <Card
                         sx={{
                           cursor: "pointer",
+                          borderRadius: 2,
                           border: (themeMui) =>
                             isSelected
                               ? `2px solid ${themeMui.palette.primary.main}`
                               : `1px solid ${themeMui.palette.divider}`,
                           ":hover": {
-                            border: "2px solid #00ffa3",
+                            boxShadow: 4,
                           },
                         }}
                         onClick={() => {
@@ -454,8 +574,9 @@ export default function RegistrationForm() {
                         <CardMedia
                           component="img"
                           image={`${API}${theme.img}`}
-                          sx={{ height: 160 }}
+                          sx={{ height: 150 }}
                         />
+
                         <CardContent>
                           <Typography>{theme.title}</Typography>
                         </CardContent>
@@ -471,16 +592,10 @@ export default function RegistrationForm() {
                 rows={4}
                 label="Describe Your Project Idea"
                 margin="normal"
-                required
-                inputProps={{ maxLength: 1000 }}
+                sx={inputStyle}
                 value={formData.ideaDescription}
                 helperText={`${formData.ideaDescription.length}/1000`}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    ideaDescription: e.target.value,
-                  })
-                }
+                onChange={(e) => updateField("ideaDescription", e.target.value)}
               />
 
               <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
@@ -491,11 +606,10 @@ export default function RegistrationForm() {
                 <Button
                   fullWidth
                   variant="contained"
-                  color="secondary"
-                  onClick={handleSubmit}
                   disabled={submitting}
+                  onClick={handleSubmit}
                 >
-                  {submitting ? <CircularProgress size={24} color="inherit" /> : "Submit"}
+                  {submitting ? <CircularProgress size={22} /> : "Submit"}
                 </Button>
               </Box>
             </>
@@ -504,17 +618,12 @@ export default function RegistrationForm() {
       )}
 
       {/* THEME DIALOG */}
+
       <Dialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
         maxWidth="sm"
         fullWidth
-        PaperProps={{
-          sx: {
-            backgroundColor: "#0f0f0f",
-            borderRadius: 3,
-          },
-        }}
       >
         {selectedThemeObj && (
           <>
@@ -526,6 +635,7 @@ export default function RegistrationForm() {
                 src={`${API}${selectedThemeObj.img}`}
                 sx={{ width: "100%", mb: 2 }}
               />
+
               <Typography>{selectedThemeObj.desc}</Typography>
             </DialogContent>
 

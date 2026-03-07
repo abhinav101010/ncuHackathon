@@ -44,13 +44,21 @@ export default function AdminPage() {
     { field: "teamId", headerName: "Team ID", width: 120 },
     { field: "teamName", headerName: "Team Name", width: 180 },
     { field: "selectedTheme", headerName: "Theme", width: 180 },
+
     { field: "teamLead", headerName: "Team Lead", width: 160 },
+    { field: "teamLeadTshirt", headerName: "TL Size", width: 100 },
+
     { field: "teamLeadEmail", headerName: "Lead Email", width: 200 },
     { field: "phone", headerName: "Phone", width: 140 },
     { field: "university", headerName: "University", width: 180 },
     { field: "yearCourse", headerName: "Year & Course", width: 160 },
+
     { field: "member1", headerName: "Member 1", width: 160 },
+    { field: "member1Tshirt", headerName: "M1 Size", width: 100 },
+
     { field: "member2", headerName: "Member 2", width: 160 },
+    { field: "member2Tshirt", headerName: "M2 Size", width: 100 },
+
     { field: "email", headerName: "Login Email", width: 200 },
     { field: "ideaDescription", headerName: "Idea", width: 300 },
 
@@ -177,12 +185,15 @@ export default function AdminPage() {
       "Team Name",
       "Theme",
       "Team Lead",
+      "TL Shirt Size",
       "Lead Email",
       "Phone",
       "University",
       "Year & Course",
       "Member 1",
+      "M1 Shirt Size",
       "Member 2",
+      "M2 Shirt Size",
       "Login Email",
       "Idea Description",
     ];
@@ -192,12 +203,15 @@ export default function AdminPage() {
       r.teamName,
       r.selectedTheme,
       r.teamLead,
+      r.teamLeadTshirt,
       r.teamLeadEmail,
       r.phone,
       r.university,
       r.yearCourse,
       r.member1,
+      r.member1Tshirt,
       r.member2,
+      r.member2Tshirt,
       r.email,
       r.ideaDescription,
     ]);
@@ -297,6 +311,9 @@ export default function AdminPage() {
                       select
                       label="Tier"
                       fullWidth
+                      sx={{
+                        minWidth: 150,
+                      }}
                       value={form.tier || ""}
                       onChange={(e) =>
                         setForm({ ...form, tier: e.target.value })
