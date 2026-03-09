@@ -34,6 +34,49 @@ export default function SponsorsPage() {
     { title: "Title Sponsor", tier: "title" },
   ];
 
+  const benefits = [
+    {
+      name: "Logo on Website",
+      tiers: ["Silver", "Gold", "Platinum", "Co-Title", "Title"],
+    },
+    {
+      name: "Social Media Promotion",
+      tiers: ["Silver", "Gold", "Platinum", "Co-Title", "Title"],
+    },
+    {
+      name: "Logo on Social Media",
+      tiers: ["Gold", "Platinum", "Co-Title", "Title"],
+    },
+    {
+      name: "Logo on Certificates",
+      tiers: ["Platinum", "Co-Title", "Title"],
+    },
+    {
+      name: "Speaker Opportunity",
+      tiers: ["Platinum", "Co-Title", "Title"],
+    },
+    {
+      name: "Product Demo Booth",
+      tiers: ["Co-Title", "Title"],
+    },
+    {
+      name: "Branding During Hackathon",
+      tiers: ["Platinum", "Co-Title", "Title"],
+    },
+    {
+      name: "Judge Final Round",
+      tiers: ["Co-Title", "Title"],
+    },
+    {
+      name: "Keynote Address",
+      tiers: ["Title"],
+    },
+    {
+      name: "Exclusive Branding",
+      tiers: ["Title"],
+    },
+  ];
+
   const contacts = [
     {
       name: "Aayush Yadav",
@@ -305,83 +348,55 @@ export default function SponsorsPage() {
 
       {/* Sponsorship Benefits Table */}
 
-      <Box sx={{ mt: 12, mb: 6 }}>
-        <Typography
-          variant="h4"
-          sx={{
-            textAlign: "center",
-            fontWeight: "bold",
-            mb: 6,
-            color: theme.palette.primary.main,
-          }}
-        >
-          Sponsorship Benefits
-        </Typography>
+      <TableContainer
+        component={Paper}
+        sx={{
+          mt: 5,
+          borderRadius: 3,
+          border: `1px solid ${theme.palette.primary.main}40`,
+          backdropFilter: "blur(10px)",
+          background:
+            theme.palette.mode === "light" ? "#fff" : "rgba(255,255,255,0.04)",
+        }}
+      >
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ fontWeight: "bold" }}>Benefits</TableCell>
 
-        <TableContainer
-          component={Paper}
-          sx={{
-            borderRadius: 3,
-            border: `1px solid ${theme.palette.primary.main}40`,
-            backdropFilter: "blur(10px)",
-            background:
-              theme.palette.mode === "light"
-                ? "#fff"
-                : "rgba(255,255,255,0.04)",
-          }}
-        >
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: "bold" }}>TIER</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>
-                  BENEFITS SUMMARY
+              {sponsorsTier.map((tier) => (
+                <TableCell key={tier.tier} align="center">
+                  {tier.title}
                 </TableCell>
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {[
-                {
-                  tier: "Silver",
-                  benefit: "Logo on website & social media",
-                },
-                {
-                  tier: "Gold",
-                  benefit: "Posters, reels, certificates, speaker access",
-                },
-                {
-                  tier: "Platinum",
-                  benefit: "Branding, product demos, website placement, booth",
-                },
-                {
-                  tier: "Co-Title",
-                  benefit:
-                    "Promotion during hackathon sessions, opportunity to judge the final round",
-                },
-                {
-                  tier: "Title",
-                  benefit:
-                    "All banners, keynote, exclusive branding, premium booth",
-                },
-              ].map((row, i) => (
-                <TableRow
-                  key={i}
-                  sx={{
-                    background:
-                      selectedTier === row.tier.toLowerCase()
-                        ? theme.palette.primary.main + "20"
-                        : "transparent",
-                  }}
-                >
-                  <TableCell>{row.tier}</TableCell>
-                  <TableCell>{row.benefit}</TableCell>
-                </TableRow>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {benefits.map((benefit, index) => (
+              <TableRow key={index}>
+                <TableCell>{benefit.name}</TableCell>
+
+                {sponsorsTier.map((tier) => {
+                  const hasBenefit = benefit.tiers.includes(tier.title.replace(" Sponsor", ""))
+
+                  return (
+                    <TableCell key={tier} align="center">
+                      {hasBenefit ? (
+                        <Typography color="success.main" fontWeight="bold">
+                          ✔
+                        </Typography>
+                      ) : (
+                        <Typography color="text.disabled">—</Typography>
+                      )}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       {/* Become Sponsor Section */}
 
       <Box

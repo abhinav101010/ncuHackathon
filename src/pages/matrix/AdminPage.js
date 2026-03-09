@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function AdminPage() {
   const navigate = useNavigate();
+
   const [tab, setTab] = useState(0);
   const [data, setData] = useState([]);
   const [registrations, setRegistrations] = useState([]);
@@ -36,6 +37,8 @@ export default function AdminPage() {
   const currentName = names[tab];
 
   const tiers = ["Silver", "Gold", "Platinum", "Co-Title", "Title"];
+
+  // ================= REGISTRATION TABLE =================
 
   const columns = [
     { field: "teamId", headerName: "Team ID", width: 120 },
@@ -68,7 +71,7 @@ export default function AdminPage() {
     },
   ];
 
-  // ================= LOAD =================
+  // ================= LOAD DATA =================
 
   const loadData = async () => {
     const res = await fetch(`${API}/api/${currentName}`);
@@ -83,14 +86,11 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    if (tab === 4) {
-      loadRegistrations();
-    } else {
-      loadData();
-    }
+    if (tab === 4) loadRegistrations();
+    else loadData();
   }, [tab]);
 
-  // ================= CREATE / UPDATE =================
+  // ================= SUBMIT =================
 
   const handleSubmit = async () => {
     const method = editingId ? "PUT" : "POST";
@@ -114,9 +114,7 @@ export default function AdminPage() {
         }
       });
 
-      if (image) {
-        formData.append("img", image);
-      }
+      if (image) formData.append("img", image);
 
       await fetch(url, {
         method,
@@ -148,24 +146,14 @@ export default function AdminPage() {
 
     let problemText = item.problemStatements || "";
 
-    // if old array format
     if (Array.isArray(problemText)) {
       problemText = problemText.join("\n");
-    }
-
-    // if JSON string like ["a","b"]
-    if (typeof problemText === "string" && problemText.startsWith("[")) {
-      try {
-        const parsed = JSON.parse(problemText);
-        if (Array.isArray(parsed)) {
-          problemText = parsed.join("\n");
-        }
-      } catch {}
     }
 
     setForm({
       ...item,
       problemStatements: problemText,
+      days: item.days ? JSON.stringify(item.days, null, 2) : "",
     });
 
     setImage(null);
@@ -181,58 +169,27 @@ export default function AdminPage() {
     loadRegistrations();
   };
 
-  // ================= DOWNLOAD CSV =================
+  // ================= CSV =================
 
   const downloadCSV = () => {
     if (!registrations.length) return;
 
-    const headers = [
-      "Team ID",
-      "Team Name",
-      "Theme",
-      "Team Lead",
-      "TL Shirt Size",
-      "Lead Email",
-      "Phone",
-      "University",
-      "Year & Course",
-      "Member 1",
-      "M1 Shirt Size",
-      "Member 2",
-      "M2 Shirt Size",
-      "Login Email",
-      "Idea Description",
-    ];
+    const headers = Object.keys(registrations[0]);
+    const rows = registrations.map((r) => headers.map((h) => r[h]));
 
-    const rows = registrations.map((r) => [
-      r.teamId,
-      r.teamName,
-      r.selectedTheme,
-      r.teamLead,
-      r.teamLeadTshirt,
-      r.teamLeadEmail,
-      r.phone,
-      r.university,
-      r.yearCourse,
-      r.member1,
-      r.member1Tshirt,
-      r.member2,
-      r.member2Tshirt,
-      r.email,
-      r.ideaDescription,
-    ]);
-
-    const csvContent = [headers, ...rows]
+    const csv = [headers, ...rows]
       .map((row) => row.map((v) => `"${v || ""}"`).join(","))
       .join("\n");
 
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-
+    const blob = new Blob([csv]);
     const link = document.createElement("a");
+
     link.href = URL.createObjectURL(blob);
     link.download = "registrations.csv";
     link.click();
   };
+
+  // ================= LOGOUT =================
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
@@ -248,17 +205,16 @@ export default function AdminPage() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mb: 2,
         }}
       >
         <Typography variant="h4">Admin Panel</Typography>
 
-        <Button variant="outlined" color="error" onClick={handleLogout}>
+        <Button color="error" onClick={handleLogout}>
           Logout
         </Button>
       </Box>
 
-      <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+      <Tabs value={tab} onChange={(e, v) => setTab(v)} sx={{ mt: 3 }}>
         <Tab label="Themes" />
         <Tab label="Events" />
         <Tab label="Rules" />
@@ -266,15 +222,52 @@ export default function AdminPage() {
         <Tab label="Registrations" />
       </Tabs>
 
+      {/* ================= FORMS ================= */}
+
       {tab !== 4 && (
         <>
-          <Box mt={3}>
+          <Box mt={4}>
             <Grid container spacing={2}>
-              {(currentName === "themes" || currentName === "events") && (
+              {/* THEMES */}
+
+              {currentName === "themes" && (
+                <>
+                  <Grid item xs={6}>
+                    <TextField
+                      label="Theme Title"
+                      fullWidth
+                      value={form.title || ""}
+                      onChange={(e) =>
+                        setForm({ ...form, title: e.target.value })
+                      }
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Problem Statements (one per line)"
+                      multiline
+                      rows={6}
+                      fullWidth
+                      value={form.problemStatements || ""}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          problemStatements: e.target.value,
+                        })
+                      }
+                    />
+                  </Grid>
+                </>
+              )}
+
+              {/* EVENTS */}
+
+              {currentName === "events" && (
                 <>
                   <Grid item xs={4}>
                     <TextField
-                      label="Title"
+                      label="Event Title"
                       fullWidth
                       value={form.title || ""}
                       onChange={(e) =>
@@ -285,50 +278,28 @@ export default function AdminPage() {
 
                   <Grid item xs={4}>
                     <TextField
-                      label="Description"
+                      label="Event Date"
                       fullWidth
-                      multiline
-                      rows={5}
-                      value={form.desc || ""}
+                      value={form.date || ""}
                       onChange={(e) =>
-                        setForm({ ...form, desc: e.target.value })
+                        setForm({ ...form, date: e.target.value })
                       }
                     />
                   </Grid>
 
-                  {currentName === "events" && (
-                    <Grid item xs={4}>
-                      <TextField
-                        label="Event Date"
-                        fullWidth
-                        value={form.date || ""}
-                        onChange={(e) =>
-                          setForm({ ...form, date: e.target.value })
-                        }
-                      />
-                    </Grid>
-                  )}
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Schedule JSON"
+                      multiline
+                      rows={10}
+                      fullWidth
+                      value={form.days || ""}
+                      onChange={(e) =>
+                        setForm({ ...form, days: e.target.value })
+                      }
+                    />
+                  </Grid>
                 </>
-              )}
-
-              {/* PROBLEM STATEMENTS TEXTBOX */}
-
-              {currentName === "themes" && (
-                <Grid item xs={12}>
-                  <TextField
-                    label="Problem Statements (one per line)"
-                    multiline
-                    rows={6}
-                    fullWidth
-                    value={form.problemStatements || ""}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        problemStatements: e.target.value,
-                      })
-                    }
-                  />
-                </Grid>
               )}
 
               {/* SPONSORS */}
@@ -375,16 +346,9 @@ export default function AdminPage() {
                     <input
                       hidden
                       type="file"
-                      accept="image/*"
                       onChange={(e) => setImage(e.target.files[0])}
                     />
                   </Button>
-
-                  {image && (
-                    <Typography sx={{ mt: 1, fontSize: 12 }}>
-                      {image.name}
-                    </Typography>
-                  )}
                 </Grid>
               )}
 
@@ -396,13 +360,15 @@ export default function AdminPage() {
                     label="Rule Text"
                     fullWidth
                     value={form.text || ""}
-                    onChange={(e) => setForm({ ...form, text: e.target.value })}
+                    onChange={(e) =>
+                      setForm({ ...form, text: e.target.value })
+                    }
                   />
                 </Grid>
               )}
             </Grid>
 
-            <Box mt={2}>
+            <Box mt={3}>
               <Button variant="contained" onClick={handleSubmit}>
                 {editingId ? "Update" : "Add"}
               </Button>
@@ -426,16 +392,6 @@ export default function AdminPage() {
                         ? item.text
                         : item.title || item.name}
                     </Typography>
-
-                    {item.desc && (
-                      <Typography color="gray">{item.desc}</Typography>
-                    )}
-
-                    {currentName === "themes" && item.problemStatements && (
-                      <Typography sx={{ fontSize: 12, mt: 1 }}>
-                        Problem Statements Added
-                      </Typography>
-                    )}
                   </Box>
 
                   <Box>
@@ -457,7 +413,7 @@ export default function AdminPage() {
         </>
       )}
 
-      {/* ================= REGISTRATION TABLE ================= */}
+      {/* ================= REGISTRATIONS ================= */}
 
       {tab === 4 && (
         <Paper sx={{ mt: 4, height: 600 }}>
@@ -465,11 +421,7 @@ export default function AdminPage() {
             <Typography variant="h6">Registrations</Typography>
 
             <Box>
-              <Button
-                startIcon={<RefreshIcon />}
-                onClick={loadRegistrations}
-                sx={{ mr: 2 }}
-              >
+              <Button startIcon={<RefreshIcon />} onClick={loadRegistrations}>
                 Refresh
               </Button>
 
@@ -484,12 +436,7 @@ export default function AdminPage() {
             columns={columns}
             getRowId={(row) => row._id}
             pageSizeOptions={[10, 25, 50]}
-            initialState={{
-              pagination: { paginationModel: { pageSize: 10 } },
-            }}
-            disableRowSelectionOnClick
             slots={{ toolbar: GridToolbar }}
-            sx={{ border: "none" }}
           />
         </Paper>
       )}
