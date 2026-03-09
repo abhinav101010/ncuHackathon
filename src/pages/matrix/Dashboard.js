@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { API } from "../../utils/common";
+import { API, hackathonDate } from "../../utils/common";
 
 const tshirtSizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
@@ -31,6 +31,11 @@ export default function Dashboard() {
   const token = localStorage.getItem("teamToken");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const EDIT_LIMIT_DATE = new Date(hackathonDate);
+  EDIT_LIMIT_DATE.setDate(EDIT_LIMIT_DATE.getDate() + 2);
+
+  const canEdit = new Date() < EDIT_LIMIT_DATE;
 
   useEffect(() => {
     loadTeam();
@@ -393,15 +398,9 @@ export default function Dashboard() {
         <AccordionDetails>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <FormControl fullWidth disabled={!editing}>
+              <FormControl fullWidth disabled>
                 <InputLabel>Select Theme</InputLabel>
-                <Select
-                  value={team.selectedTheme || ""}
-                  label="Select Theme"
-                  onChange={(e) =>
-                    handleFieldChange("selectedTheme", e.target.value)
-                  }
-                >
+                <Select value={team.selectedTheme || ""} label="Select Theme">
                   {themes.map((theme) => (
                     <MenuItem key={theme._id} value={theme.title}>
                       {theme.title}
@@ -440,7 +439,11 @@ export default function Dashboard() {
       {/* ACTION BUTTON */}
       <Box sx={{ mt: 4 }}>
         {!editing ? (
-          <Button variant="contained" onClick={() => setEditing(true)}>
+          <Button
+            variant="contained"
+            onClick={() => setEditing(true)}
+            disabled={!canEdit}
+          >
             Edit Details
           </Button>
         ) : (
@@ -449,6 +452,12 @@ export default function Dashboard() {
           </Button>
         )}
       </Box>
+      {!canEdit && (
+        <Typography color="error" sx={{ mt: 2 }}>
+          Editing period has expired. You can only edit details within 2 days
+          after registration closes.
+        </Typography>
+      )}
     </Container>
   );
 }

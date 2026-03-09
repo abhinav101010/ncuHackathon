@@ -56,12 +56,12 @@ export default function SponsorsPage() {
       tiers: ["Platinum", "Co-Title", "Title"],
     },
     {
-      name: "Product Demo Booth",
-      tiers: ["Co-Title", "Title"],
-    },
-    {
       name: "Branding During Hackathon",
       tiers: ["Platinum", "Co-Title", "Title"],
+    },
+    {
+      name: "Product Demo Booth",
+      tiers: ["Co-Title", "Title"],
     },
     {
       name: "Judge Final Round",
