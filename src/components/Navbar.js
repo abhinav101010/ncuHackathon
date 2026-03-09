@@ -99,7 +99,6 @@ export default function Navbar({ themeName, setThemeName }) {
 
         {/* Login Button */}
         <Button
-          disabled={calculateTimeLeft().expired}
           component={Link}
           to="/login"
           variant="outlined"

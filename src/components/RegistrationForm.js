@@ -247,8 +247,6 @@ export default function RegistrationForm() {
 
               {/* STEP INDICATOR */}
 
-              {/* STEP INDICATOR */}
-
               <Box
                 sx={{
                   display: "flex",
@@ -257,7 +255,7 @@ export default function RegistrationForm() {
                   mb: 4,
                 }}
               >
-                {[1, 2, 3].map((s, index) => (
+                {[1, 2, 3, 4].map((s, index) => (
                   <Box key={s} sx={{ display: "flex", alignItems: "center" }}>
                     {/* CIRCLE */}
 
@@ -288,7 +286,7 @@ export default function RegistrationForm() {
 
                     {/* LINE */}
 
-                    {index < 2 && (
+                    {index < 3 && (
                       <Box
                         sx={{
                           width: 60,
@@ -627,7 +625,7 @@ export default function RegistrationForm() {
                       Back
                     </Button>
 
-                    <Button
+                    {/* <Button
                       fullWidth
                       variant="contained"
                       disabled={submitting || calculateTimeLeft().expired}
@@ -640,9 +638,230 @@ export default function RegistrationForm() {
                       ) : (
                         "Submit"
                       )}
+                    </Button> */}
+
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      onClick={() => setStep(4)}
+                    >
+                      Next
                     </Button>
                   </Box>
                 </>
+              )}
+
+              {/* STEP 4 */}
+
+              {step === 4 && (
+                <Box
+                  sx={{
+                    textAlign: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    px: { xs: 1, sm: 4 },
+                  }}
+                >
+                  <Typography variant="h5" fontWeight={600} sx={{ mb: 1 }}>
+                    Registration Fee Payment
+                  </Typography>
+
+                  <Typography
+                    sx={{
+                      mb: 3,
+                      color: "text.secondary",
+                      maxWidth: 420,
+                    }}
+                  >
+                    Scan the QR code below and complete the payment to confirm
+                    your hackathon registration.
+                  </Typography>
+
+                  {/* QR CARD */}
+
+                  <Box
+                    sx={{
+                      p: 3,
+                      borderRadius: 3,
+                      background: (theme) => theme.palette.background.default,
+                      border: (theme) => `1px solid ${theme.palette.divider}`,
+                      boxShadow: 3,
+                      mb: 3,
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src="/payment-qr.png"
+                      sx={{
+                        width: 220,
+                        maxWidth: "100%",
+                        borderRadius: 2,
+                      }}
+                    />
+
+                    <Typography
+                      sx={{
+                        mt: 2,
+                        fontWeight: 600,
+                      }}
+                    >
+                      UPI ID
+                    </Typography>
+
+                    <Typography
+                      sx={{
+                        fontSize: 18,
+                        letterSpacing: 0.5,
+                        color: "primary.main",
+                        fontWeight: 600,
+                      }}
+                    >
+                      hackathon@upi
+                    </Typography>
+                  </Box>
+
+                  {/* PAYMENT BREAKDOWN */}
+
+                  <Box
+                    sx={{
+                      width: "100%",
+                      maxWidth: 420,
+                      borderRadius: 2,
+                      border: (theme) => `1px solid ${theme.palette.divider}`,
+                      p: 2,
+                      mb: 3,
+                      background: (theme) => theme.palette.background.paper,
+                    }}
+                  >
+                    <Typography fontWeight={600} sx={{ mb: 1 }}>
+                      Payment Details{" "}
+                    </Typography>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        mb: 0.5,
+                      }}
+                    >
+                      {" "}
+                      <Typography color="text.secondary">
+                        Registration Fee
+                      </Typography>{" "}
+                      <Typography>₹300</Typography>{" "}
+                    </Box>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        mb: 0.5,
+                      }}
+                    >
+                      {" "}
+                      <Typography color="text.secondary">
+                        T-Shirts (3 Members)
+                      </Typography>{" "}
+                      <Typography>₹500</Typography>{" "}
+                    </Box>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        mt: 1,
+                        pt: 1,
+                        borderTop: (theme) =>
+                          `1px solid ${theme.palette.divider}`,
+                        fontWeight: 600,
+                        fontSize: 18,
+                      }}
+                    >
+                      <Typography>Total</Typography>
+
+                      <Typography color="primary.main">₹800</Typography>
+                    </Box>
+                  </Box>
+
+                  {/* CONTACT */}
+
+                  <Typography
+                    sx={{
+                      fontWeight: 500,
+                      mb: 0.5,
+                    }}
+                  >
+                    Payment Confirmation Contact
+                  </Typography>
+
+                  <Typography
+                    sx={{
+                      fontSize: 18,
+                      fontWeight: 600,
+                      color: "primary.main",
+                      mb: 2,
+                    }}
+                  >
+                    +91 9876543210
+                  </Typography>
+
+                  <Typography
+                    sx={{
+                      mb: 1,
+                      maxWidth: 420,
+                      color: "text.secondary",
+                    }}
+                  >
+                    After completing the payment, click submit to finalize your
+                    registration.
+                  </Typography>
+
+                  <Typography
+                    sx={{
+                      fontSize: 13,
+                      color: "red",
+                      mb: 3,
+                    }}
+                  >
+                    Note: Your registration will be approved after payment
+                    verification.
+                  </Typography>
+
+                  {/* BUTTONS */}
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 2,
+                      width: "100%",
+                      maxWidth: 420,
+                    }}
+                  >
+                    <Button
+                      fullWidth
+                      variant="outlined"
+                      onClick={() => setStep(3)}
+                    >
+                      Back
+                    </Button>
+
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      disabled={submitting || calculateTimeLeft().expired}
+                      onClick={handleSubmit}
+                    >
+                      {calculateTimeLeft().expired ? (
+                        "Registrations Closed"
+                      ) : submitting ? (
+                        <CircularProgress size={22} />
+                      ) : (
+                        "Confirm & Submit"
+                      )}
+                    </Button>
+                  </Box>
+                </Box>
               )}
             </Box>
           )}
