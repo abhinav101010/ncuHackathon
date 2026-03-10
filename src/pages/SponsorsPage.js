@@ -100,7 +100,7 @@ export default function SponsorsPage() {
       .then((res) => res.json())
       .then((data) => {
         setSponsors(data);
-        console.log(data);
+        //console.log(data);
 
         setLoading(false);
       })

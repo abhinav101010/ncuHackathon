@@ -63,7 +63,7 @@ function App() {
       {/* Background */}
       <NetworkBackground />
 
-      <Box sx={{ position: "relative", zIndex: 1 }}>
+      <Box sx={{ position: "relative", zIndex: 1, overflow:"hidden" }}>
         <Navbar themeName={themeName} setThemeName={setThemeName} />
         <ScrollToTop />
         <Routes>
