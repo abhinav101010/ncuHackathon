@@ -809,7 +809,7 @@ export default function RegistrationForm() {
                         fontWeight: 600,
                       }}
                     >
-                      hackathon@upi
+                      9315431144@axl
                     </Typography>
                   </Box>
 
@@ -895,7 +895,7 @@ export default function RegistrationForm() {
                       mb: 2,
                     }}
                   >
-                    +91 9876543210
+                    +91 9870340530
                   </Typography>
 
                   <Typography

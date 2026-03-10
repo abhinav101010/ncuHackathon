@@ -13,6 +13,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import EmailIcon from "@mui/icons-material/Email";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Countdown from "./Countdown";
 
 export default function Footer() {
   const theme = useTheme();
@@ -119,7 +120,7 @@ export default function Footer() {
         </Grid>
 
         {/* Social */}
-        {/* <Grid item xs={12} md={2}>
+        <Grid item xs={12} md={2}>
           <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
             Follow Us
           </Typography>
@@ -164,7 +165,9 @@ export default function Footer() {
               <EmailIcon />
             </IconButton>
           </Box>
-        </Grid> */}
+        </Grid>
+
+        {/* <Countdown/> */}
       </Grid>
 
       <Divider sx={{ my: 4 }} />
@@ -175,7 +178,7 @@ export default function Footer() {
           variant="caption"
           sx={{ color: theme.palette.text.secondary }}
         >
-          © 2026 INNOVATHON • Built with ❤️ by NCU Developers
+          © 2026 INNOVATHON • Built with ❤️ by CURE
         </Typography>
       </Box>
     </Box>
