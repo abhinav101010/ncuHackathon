@@ -3,6 +3,7 @@ import { useTheme } from "@mui/material/styles";
 
 export default function NetworkBackground() {
   const canvasRef = useRef(null);
+  const animationRef = useRef(null);
   const theme = useTheme();
 
   useEffect(() => {
@@ -12,20 +13,27 @@ export default function NetworkBackground() {
     const primary = theme.palette.primary.main;
 
     let particles = [];
-    const num = 80;
+    const num = window.innerWidth < 600 ? 40 : 80; // fewer particles on mobile
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
 
-      // regenerate particles on resize
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+
+      ctx.scale(dpr, dpr);
+
       particles = [];
+
       for (let i = 0; i < num; i++) {
         particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 1,
-          vy: (Math.random() - 0.5) * 1,
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          vx: (Math.random() - 0.5) * 0.7,
+          vy: (Math.random() - 0.5) * 0.7,
         });
       }
     };
@@ -39,40 +47,40 @@ export default function NetworkBackground() {
         p.x += p.vx;
         p.y += p.vy;
 
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        if (p.x < 0 || p.x > window.innerWidth) p.vx *= -1;
+        if (p.y < 0 || p.y > window.innerHeight) p.vy *= -1;
 
-        // particle color
+        // particle
         ctx.fillStyle = primary;
-
         ctx.beginPath();
         ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
         ctx.fill();
 
-        // connecting lines
+        // connections
         for (let j = i + 1; j < particles.length; j++) {
           const dx = p.x - particles[j].x;
           const dy = p.y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < 120) {
+            const opacity = 1 - dist / 120;
+
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(particles[j].x, particles[j].y);
 
-            const opacity = 1 - dist / 120;
-
             ctx.strokeStyle =
               theme.palette.mode === "light"
-                ? `rgba(0,0,0,${opacity * 0.25})`
-                : `${primary}${Math.floor(opacity * 80).toString(16)}`;
+                ? `rgba(0,0,0,${opacity * 0.2})`
+                : `rgba(0,229,255,${opacity * 0.4})`;
 
+            ctx.lineWidth = 1;
             ctx.stroke();
           }
         }
       });
 
-      requestAnimationFrame(draw);
+      animationRef.current = requestAnimationFrame(draw);
     }
 
     draw();
@@ -81,8 +89,9 @@ export default function NetworkBackground() {
 
     return () => {
       window.removeEventListener("resize", resize);
+      cancelAnimationFrame(animationRef.current);
     };
-  }, [theme]); // re-run when theme changes
+  }, [theme]);
 
   return (
     <canvas

@@ -153,8 +153,7 @@ export default function HomePage() {
             }}
           >
             Join visionary developers, designers, and innovators to create
-            breakthrough solutions in just 56 hours. Code. Collaborate.
-            Conquer.
+            breakthrough solutions in just 56 hours. Code. Collaborate. Conquer.
           </Typography>
         </motion.div>
 
@@ -163,8 +162,9 @@ export default function HomePage() {
           sx={{
             mb: 5,
             display: "flex",
-            flexWrap: "wrap",
+            flexDirection: { xs: "column", sm: "row" },
             justifyContent: "center",
+            alignItems: "center",
             gap: 2,
           }}
         >
@@ -173,10 +173,20 @@ export default function HomePage() {
             disabled={calculateTimeLeft().expired}
             onClick={() => navigate("/register")}
             sx={{
+              width: { xs: "100%", sm: "auto" },
               background: "#ff0080",
               fontWeight: "bold",
               px: { xs: 3, md: 4 },
               py: 1.2,
+              borderRadius: 2,
+              textTransform: "none",
+              "&:hover": {
+                background: "#e00072",
+              },
+              "&:disabled": {
+                background: "#999",
+                color: "#fff",
+              },
             }}
           >
             Register Now
@@ -186,11 +196,18 @@ export default function HomePage() {
             variant="outlined"
             onClick={() => navigate("/themes")}
             sx={{
+              width: { xs: "100%", sm: "auto" },
               borderColor: theme.palette.primary.main,
               color: theme.palette.primary.main,
               fontWeight: "bold",
               px: { xs: 3, md: 4 },
               py: 1.2,
+              borderRadius: 2,
+              textTransform: "none",
+              "&:hover": {
+                borderColor: theme.palette.primary.dark,
+                background: `${theme.palette.primary.main}10`,
+              },
             }}
           >
             Explore Themes

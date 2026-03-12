@@ -154,6 +154,39 @@ export const lightTheme = createTheme({
   components: baseComponents,
 });
 
+// export const studentTheme = createTheme({
+//   palette: {
+//     mode: "dark",
+//     primary: { main: "#7c4dff" },
+//     secondary: { main: "#ffea00" },
+//     background: {
+//       default: "#0f0f1a",
+//       paper: "rgba(124,77,255,0.08)",
+//     },
+//   },
+//   typography: {
+//     fontFamily: "Inter, sans-serif",
+//   },
+//   components: baseComponents,
+// });
+
+
+// export const studentTheme = createTheme({
+//   palette: {
+//     mode: "dark",
+//     primary: { main: "#ff4db8" },
+//     secondary: { main: "#ffea00" },
+//     background: {
+//       default: "#0de33f",
+//       paper: "rgba(124,77,255,0.08)",
+//     },
+//   },
+//   typography: {
+//     fontFamily: "Inter, sans-serif",
+//   },
+//   components: baseComponents,
+// });
+
 export const studentTheme = createTheme({
   palette: {
     mode: "dark",

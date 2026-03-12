@@ -29,7 +29,8 @@ export default function ThemePage() {
 
   const isThemesPage = location.pathname.startsWith("/themes");
 
-  // LOAD THEMES FROM API
+  /* LOAD THEMES */
+
   useEffect(() => {
     const loadThemes = async () => {
       try {
@@ -57,12 +58,19 @@ export default function ThemePage() {
   return (
     <>
       {/* THEMES SECTION */}
-      <Container sx={{ py: 12 }}>
+
+      <Container
+        maxWidth="lg"
+        sx={{
+          py: { xs: 8, md: 12 },
+          px: { xs: 2, sm: 3 },
+        }}
+      >
         <SectionHeading>Themes</SectionHeading>
 
         <Grid
           container
-          spacing={4}
+          spacing={{ xs: 3, md: 4 }}
           justifyContent="center"
           alignItems="stretch"
         >
@@ -72,6 +80,7 @@ export default function ThemePage() {
               xs={12}
               sm={6}
               md={4}
+              lg={3}
               key={themeItem._id || index}
               sx={{
                 display: "flex",
@@ -85,6 +94,7 @@ export default function ThemePage() {
       </Container>
 
       {/* THEME DETAILS DIALOG */}
+
       <Dialog
         open={dialogOpen}
         onClose={handleClose}
@@ -96,6 +106,7 @@ export default function ThemePage() {
             border: `1px solid ${muiTheme.palette.primary.main}`,
             borderRadius: 3,
             boxShadow: `0 0 25px ${muiTheme.palette.primary.main}40`,
+            mx: { xs: 2, sm: 0 }, // prevents mobile edge overflow
           },
         }}
       >
@@ -106,6 +117,7 @@ export default function ThemePage() {
                 borderBottom: `1px solid ${muiTheme.palette.divider}`,
                 fontWeight: 700,
                 color: muiTheme.palette.primary.main,
+                fontSize: { xs: "1.2rem", md: "1.4rem" },
               }}
             >
               {selectedTheme.title}
@@ -118,6 +130,7 @@ export default function ThemePage() {
                 alt={selectedTheme.title}
                 sx={{
                   width: "100%",
+                  height: { xs: 180, sm: 220 },
                   borderRadius: 2,
                   mb: 2,
                   objectFit: "cover",
@@ -128,7 +141,7 @@ export default function ThemePage() {
                 sx={{
                   color: muiTheme.palette.text.primary,
                   lineHeight: 1.7,
-                  fontSize: "0.95rem",
+                  fontSize: { xs: "0.9rem", md: "0.95rem" },
                 }}
               >
                 {selectedTheme.desc}
@@ -136,7 +149,14 @@ export default function ThemePage() {
             </DialogContent>
 
             <DialogActions sx={{ p: 2 }}>
-              <Button onClick={handleClose} variant="contained">
+              <Button
+                onClick={handleClose}
+                variant="contained"
+                sx={{
+                  px: 3,
+                  fontWeight: "bold",
+                }}
+              >
                 Close
               </Button>
             </DialogActions>
@@ -145,6 +165,7 @@ export default function ThemePage() {
       </Dialog>
 
       {/* SPONSORS SECTION */}
+
       {isThemesPage && <Sponsors />}
     </>
   );

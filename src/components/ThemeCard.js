@@ -27,22 +27,21 @@ export default function ThemeCard({ theme: themeItem }) {
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleClick = () => {
-    if (!isThemesPage) {
-      setOpenDialog(true);
-    }
+    if (!isThemesPage) setOpenDialog(true);
   };
 
-  // convert text → array
   const problems =
-    themeItem?.problemStatements?.split("\n").filter((p) => p.trim() !== "") ||
-    [];
+    themeItem?.problemStatements
+      ?.split("\n")
+      .filter((p) => p.trim() !== "") || [];
 
   return (
     <>
       <Box
         sx={{
-          width: 320,
-          height: !isThemesPage ? 330 : 420,
+          width: "100%",
+          maxWidth: 340,
+          height: { xs: 350, sm: !isThemesPage ? 330 : 420 },
         }}
       >
         <Card
@@ -57,6 +56,14 @@ export default function ThemeCard({ theme: themeItem }) {
             flexDirection: "column",
             overflow: "hidden",
             cursor: isThemesPage ? "default" : "pointer",
+            transition: "0.25s",
+
+            "&:hover": !isThemesPage
+              ? {
+                  transform: "translateY(-4px)",
+                  boxShadow: `0 0 25px ${theme.palette.primary.main}55`,
+                }
+              : {},
           }}
         >
           {/* IMAGE */}
@@ -66,7 +73,7 @@ export default function ThemeCard({ theme: themeItem }) {
             image={`${API}${themeItem?.img}`}
             alt={themeItem?.title}
             sx={{
-              height: 180,
+              height: { xs: 160, sm: 180 },
               objectFit: "cover",
               flexShrink: 0,
             }}
@@ -91,6 +98,7 @@ export default function ThemeCard({ theme: themeItem }) {
                 color: theme.palette.primary.main,
                 px: 2,
                 pt: 2,
+                fontSize: { xs: "1rem", sm: "1.1rem" },
               }}
             >
               {themeItem?.title}
@@ -103,12 +111,13 @@ export default function ThemeCard({ theme: themeItem }) {
                 px: 2,
                 mt: 1,
                 mb: 1,
+                fontSize: { xs: "0.85rem", sm: "0.9rem" },
               }}
             >
-              {themeItem?.desc.substring(0, 100)}...
+              {themeItem?.desc?.substring(0, 100)}...
             </Typography>
 
-            {/* SINGLE ACCORDION */}
+            {/* ACCORDION */}
 
             {isThemesPage && problems.length > 0 && (
               <Accordion
@@ -160,6 +169,12 @@ export default function ThemeCard({ theme: themeItem }) {
           onClose={() => setOpenDialog(false)}
           maxWidth="sm"
           fullWidth
+          PaperProps={{
+            sx: {
+              mx: { xs: 2, sm: 0 },
+              borderRadius: 3,
+            },
+          }}
         >
           <DialogTitle>{themeItem?.title}</DialogTitle>
 
@@ -170,6 +185,8 @@ export default function ThemeCard({ theme: themeItem }) {
               alt={themeItem?.title}
               sx={{
                 width: "100%",
+                height: { xs: 180, sm: 220 },
+                objectFit: "cover",
                 borderRadius: 2,
                 mb: 2,
               }}
@@ -187,7 +204,9 @@ export default function ThemeCard({ theme: themeItem }) {
                 }}
               >
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography fontWeight="bold">Problem Statements</Typography>
+                  <Typography fontWeight="bold">
+                    Problem Statements
+                  </Typography>
                 </AccordionSummary>
 
                 <AccordionDetails>

@@ -36,7 +36,7 @@ export default function Sponsors() {
   const sponsorsLoop = [...sponsors, ...sponsors];
 
   return (
-    <Container maxWidth="xl" sx={{ px: { xs: 1, md: 2 } }}>
+    <>
       <Box
         sx={{
           position: "relative",
@@ -45,7 +45,7 @@ export default function Sponsors() {
           backdropFilter: "blur(12px)",
           p: { xs: 2, sm: 3, md: 4 },
           boxShadow: `0 0 30px ${theme.palette.primary.main}20`,
-          borderRadius: { xs: 2, md: 3 },
+          // borderRadius: { xs: 2, md: 3 },
         }}
       >
         {/* Sliding Row */}
@@ -148,6 +148,6 @@ export default function Sponsors() {
           }}
         />
       </Box>
-    </Container>
+    </>
   );
 }
