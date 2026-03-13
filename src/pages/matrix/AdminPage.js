@@ -261,6 +261,19 @@ export default function AdminPage() {
 
                   <Grid item xs={12}>
                     <TextField
+                      label="Theme Description"
+                      multiline
+                      rows={4}
+                      fullWidth
+                      value={form.desc || ""}
+                      onChange={(e) =>
+                        setForm({ ...form, desc: e.target.value })
+                      }
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
                       label="Problem Statements (one per line)"
                       multiline
                       rows={6}
@@ -406,6 +419,12 @@ export default function AdminPage() {
                         ? item.text
                         : item.title || item.name}
                     </Typography>
+
+                    {item.desc && (
+                      <Typography color="text.secondary" fontSize="0.9rem">
+                        {item.desc}
+                      </Typography>
+                    )}
                   </Box>
 
                   <Box>

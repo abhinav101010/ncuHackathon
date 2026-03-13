@@ -42,7 +42,7 @@ export default function Sponsors() {
           position: "relative",
           overflow: "hidden",
           background: theme.palette.background.paper,
-          backdropFilter: "blur(12px)",
+          backdropFilter: "blur(6px)",
           p: { xs: 2, sm: 3, md: 4 },
           boxShadow: `0 0 30px ${theme.palette.primary.main}20`,
           // borderRadius: { xs: 2, md: 3 },
@@ -116,7 +116,7 @@ export default function Sponsors() {
 
         {/* LEFT FADE */}
 
-        <Box
+        {/* <Box
           sx={{
             position: "absolute",
             left: 0,
@@ -129,11 +129,11 @@ export default function Sponsors() {
                 ? "linear-gradient(to right,#ffffff,transparent)"
                 : "linear-gradient(to right,#0a0a0a,transparent)",
           }}
-        />
+        /> */}
 
         {/* RIGHT FADE */}
 
-        <Box
+        {/* <Box
           sx={{
             position: "absolute",
             right: 0,
@@ -146,7 +146,7 @@ export default function Sponsors() {
                 ? "linear-gradient(to left,#ffffff,transparent)"
                 : "linear-gradient(to left,#0a0a0a,transparent)",
           }}
-        />
+        /> */}
       </Box>
     </>
   );

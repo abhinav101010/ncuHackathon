@@ -1,8 +1,7 @@
 import { ThemeProvider, CssBaseline, Box } from "@mui/material";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { darkNeon, lightTheme, studentTheme } from "./theme";
-
+import { darkNeon, lightTheme, studentTheme, liquidGlassTheme } from "./theme";
 import ScrollToTop from "./utils/ScrollToTop";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -24,6 +23,8 @@ import LoginPage from "./pages/matrix/LoginPage";
 import AdminPage from "./pages/matrix/AdminPage";
 import Dashboard from "./pages/matrix/Dashboard";
 import TeamLoginPage from "./pages/matrix/TeamLoginPage";
+import CustomCursor from "./components/CustomCursor";
+import { initCursorTracker } from "./utils/cursorTracker";
 
 function App() {
   const location = useLocation();
@@ -39,10 +40,10 @@ function App() {
     dark: darkNeon,
     light: lightTheme,
     student: studentTheme,
+    liquid: liquidGlassTheme,
   };
 
-  const currentTheme = themes[themeName];
-
+  const currentTheme = themes[themeName] || lightTheme;
   useEffect(() => {
     localStorage.setItem("theme", themeName);
   }, [themeName]);
@@ -56,14 +57,19 @@ function App() {
       window.location.href = "/dashboard";
     }
   }, [location.pathname]);
+
+  useEffect(() => {
+    initCursorTracker();
+  }, []);
   return (
     <ThemeProvider theme={currentTheme}>
       <CssBaseline />
 
       {/* Background */}
+      <CustomCursor/>
       <NetworkBackground />
 
-      <Box sx={{ position: "relative", zIndex: 1, overflow:"hidden" }}>
+      <Box sx={{ position: "relative", zIndex: 1, overflow: "hidden" }}>
         <Navbar themeName={themeName} setThemeName={setThemeName} />
         <ScrollToTop />
         <Routes>

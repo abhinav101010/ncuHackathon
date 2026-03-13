@@ -36,7 +36,7 @@ export default function SponsorsPage() {
 
   const benefits = [
     {
-      name: "Logo on Website",
+      name: "Logo on Website & Social Media",
       tiers: {
         Silver: "yes",
         Gold: "yes",
@@ -46,7 +46,25 @@ export default function SponsorsPage() {
       },
     },
     {
-      name: "Social Media Promotion",
+      name: "Logo on Event Standees & Posters",
+      tiers: {
+        Gold: "yes",
+        Platinum: "yes",
+        "Co-Title": "yes",
+        Title: "yes",
+      },
+    },
+    {
+      name: "Logo on Event Certificates",
+      tiers: {
+        Gold:"yes",
+        Platinum: "yes",
+        "Co-Title": "yes",
+        Title: "yes",
+      },
+    },
+    {
+      name: "Branding During Event",
       tiers: {
         Silver: "yes",
         Gold: "yes",
@@ -56,61 +74,47 @@ export default function SponsorsPage() {
       },
     },
     {
-      name: "Logo on Social Media",
+      name: "Sponsor Stall Space",
       tiers: {
-        Gold: "yes",
-        Platinum: "yes",
+        Platinum: "Optional",
+        "Co-Title": "5x10 ft",
+        Title: "10x10 ft",
+      },
+    },
+    {
+      name: "Opportunity To Send Judges",
+      tiers: {
+        Platinum: "1-2",
+        "Co-Title": "1-2",
+        Title: "2",
+      },
+    },
+    {
+      name: "Mentor Panel Slot",
+      tiers: {
+        "Co-Title": "1",
+        Title: "2",
+      },
+    },
+    {
+      name: "Promotion During Hackathon Sessions",
+      tiers: {
+        Platinum:"yes",
         "Co-Title": "yes",
         Title: "yes",
       },
     },
     {
-      name: "Logo on Certificates",
-      tiers: {
-        Platinum: "yes",
-        "Co-Title": "yes",
-        Title: "yes",
-      },
-    },
-    {
-      name: "Speaker Opportunity",
-      tiers: {
-        Platinum: "yes",
-        "Co-Title": "yes",
-        Title: "yes",
-      },
-    },
-    {
-      name: "Branding During Hackathon",
-      tiers: {
-        Platinum: "yes",
-        "Co-Title": "yes",
-        Title: "yes",
-      },
-    },
-    {
-      name: "Product Demo Booth",
-      tiers: {
-        "Co-Title": "yes",
-        Title: "yes",
-      },
-    },
-    {
-      name: "Judge Final Round",
+      name: "Game / Activity Naming Rights",
       tiers: {
         "Co-Title": "yes",
         Title: "yes",
       },
     },
     {
-      name: "Keynote Address",
+      name: "Keynote Slot",
       tiers: {
-        Title: "yes",
-      },
-    },
-    {
-      name: "Exclusive Branding",
-      tiers: {
+        "Co-Title":"Optional",
         Title: "yes",
       },
     },

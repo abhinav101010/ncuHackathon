@@ -18,6 +18,7 @@ import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import logo from "../utils/logo.png";
 import { calculateTimeLeft } from "../utils/common";
+import GlassBox from "./GlassBox";
 
 export default function Navbar({ themeName, setThemeName }) {
   const theme = useTheme();
@@ -74,6 +75,7 @@ export default function Navbar({ themeName, setThemeName }) {
           <MenuItem value="light">Light</MenuItem>
           <MenuItem value="dark">Dark Neon</MenuItem>
           <MenuItem value="student">Student</MenuItem>
+          <MenuItem value="liquid">Liquid Glass</MenuItem>
         </Select>
       </Box>
 
@@ -135,9 +137,11 @@ export default function Navbar({ themeName, setThemeName }) {
       <AppBar
         position="fixed"
         sx={{
-          background: isLight ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.6)",
-          color: theme.palette.text.primary,
+          background: "rgba(255,255,255,0.05)",
           backdropFilter: "blur(10px)",
+          borderBottom: "1px solid rgba(255,255,255,0.15)",
+          color: theme.palette.text.primary,
+          // backdropFilter: "blur(10px)",
           borderBottom: `1px solid ${theme.palette.primary.main}30`,
         }}
       >
@@ -183,6 +187,7 @@ export default function Navbar({ themeName, setThemeName }) {
             >
               <MenuItem value="light">Light</MenuItem>
               <MenuItem value="dark">Dark Neon</MenuItem>
+              <MenuItem value="liquid">Ocean</MenuItem>
               <MenuItem value="student">Student</MenuItem>
             </Select>
 

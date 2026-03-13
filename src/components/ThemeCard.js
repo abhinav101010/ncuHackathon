@@ -84,7 +84,7 @@ export default function ThemeCard({ theme: themeItem }) {
           <CardContent
             sx={{
               flexGrow: 1,
-              p: 0,
+              p: -1,
               display: "flex",
               flexDirection: "column",
               overflowY: "auto",
